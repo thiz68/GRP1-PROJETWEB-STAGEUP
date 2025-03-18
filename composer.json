@@ -1,0 +1,31 @@
+{
+  "name": "grp1/STAGEUP",
+  "type": "project",
+  "require-dev": {
+    "phpunit/phpunit": "^11.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "grp1\\STAGEUP\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Thibaud GABUS",
+      "email": "thibaud.gabus@viacesi.fr"
+    },
+    {
+      "name": "Jules WEYANDT",
+      "email": "jules.weyandt@viacesi.fr"
+    },
+    {
+      "name": "Cléry GARDES",
+      "email": "clery.gardes@viacesi.fr"
+    },
+    {
+      "name": "Yanis SZABLEWSKI",
+      "email": "yanis.szablewski@viacesi.fr"
+    }
+  ],
+  "require": {}
+}
