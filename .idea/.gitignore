@@ -12,5 +12,3 @@
 /.idea/
 #VS Code
 /.vscode/
-#.phar
-/composer.phar
