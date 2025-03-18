@@ -1,5 +1,5 @@
 {
-  "name": "grp1/STAGEUP",
+  "name": "grp1/stageup",
   "type": "project",
   "require-dev": {
     "phpunit/phpunit": "^11.5"
@@ -19,7 +19,7 @@
       "email": "jules.weyandt@viacesi.fr"
     },
     {
-      "name": "Clery GARDES",
+      "name": "Cléry GARDES",
       "email": "clery.gardes@viacesi.fr"
     },
     {
