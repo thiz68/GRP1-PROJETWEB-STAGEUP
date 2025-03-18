@@ -1,6 +1,6 @@
 #Vendor composer.json
 /vendor/
 #IDEA
-/.idea/
+.idea/
 #VS Code
-/.vscode/
+.vscode/
