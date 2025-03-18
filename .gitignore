@@ -1,0 +1,6 @@
+#Vendor composer.json
+/vendor/
+#IDEA
+/.idea/
+#VS Code
+/.vscode/
