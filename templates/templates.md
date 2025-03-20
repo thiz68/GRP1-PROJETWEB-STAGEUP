@@ -1,1 +1,1 @@
-ARCHITECTURE MVC - Fichier des templates
+ARCHITECTURE MVC - Fichier des templates TWIG
