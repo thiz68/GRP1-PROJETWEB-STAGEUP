@@ -18,5 +18,3 @@ Web4All est un site web permettant aux étudiants de trouver des offres de stage
 - **Backend** : PHP
 - **Base de données** : MySQL
 - **Déploiement** : Azure VM
-
-CONFIGURATION SERVEUR
