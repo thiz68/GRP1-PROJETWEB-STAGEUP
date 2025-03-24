@@ -1,1 +1,0 @@
-ARCHITECTURE MVC - Fichier des modèles (BDD)

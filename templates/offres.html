@@ -1,0 +1,96 @@
+<html> 
+
+<head> 
+	<meta charset="utf-8">
+	<meta name="author" content="Clery G">
+	<link rel="stylesheet" href="http://stageup/static/style_offres.css">
+	<title>Lebonplan</title> 
+</head> 
+
+<body>
+
+	<header>
+
+		<img class="center" src="http://stageup/static/logo_stageup.jpg" alt="Logo Lebonplan">
+		
+
+		<nav class="nav_bar">
+			<div class='nav_left'>
+				<a href="/">Accueil</a> | 
+				<a href="/?uri=entreprises">Entreprises</a> | 
+				<a href="/?uri=offres" class="active">Offres</a> | 
+				<a href="whishlist.html">Wishlist</a> | 
+				<a href="contact.html">Contact</a>
+			</div>
+			<div class="nav_right">
+				<a href="connexion.html">Connexion</a> | 
+				<a href="inscription.html" id="inscription_button">S'inscrire</a>
+			</div>
+		</nav>
+
+		<nav class="chemin">
+			<a href="/">Accueil</a> > 
+			<a href="/?uri=entreprises">Entreprises</a> >
+			<a href="/?uri=offres">Offres</a>
+		</nav>
+
+	</header>
+
+	<section class="principal">
+ 
+		<p class="titre">Liste des offres</p>
+		<p class="texte">Affichage de la liste des offres pour une entreprise (3 par page)</p>
+
+		<article>
+
+            <table class="liste_offres"> 
+
+                <tr>
+                    <th>Titre</th>
+                    <th>Description</th>
+					<th>Rémunération</th>
+					<th>Date de débu</th>
+					<th>Date de fin</th>
+                </tr>
+				{% set offers_correspondantes = [] %}
+                {% for elem in offers %}{% if elem.id_enterprise == id_enterprise %}
+					{% set offers_correspondantes = offers_correspondantes|merge([elem]) %}
+				{% endif %}{% endfor %}
+				{% for elem in offers_correspondantes|slice((page-1)*3, 3) %}
+					<tr>
+						<td>{{ elem.titre }}</td>
+						<td>{{ elem.desc }}</td>
+						<td>{{ elem.remun_offer }}</td>
+						<td>{{ elem.s_date_offer }}</td>
+						<td>{{ elem.e_date_offer }}</td>
+					</tr>
+				{% endfor %}
+
+            </table>
+
+			{% if page > 1 %}{% set page_n = page - 1 %}{% else %}{% set page_n = 1 %}{% endif %}
+			<a href="?uri=offres&page={{ page_n }}&id_enterprise={{id_enterprise}}">
+				<button id="precedent">Page précédente</button></a>
+			
+			{% if page*3 <= offres_correspondantes|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
+            <a href="?uri=offres&page={{ page_n }}&id_enterprise={{id_enterprise}}">
+                <button id="suivant">Page suivante</button></a>
+        
+		</article>
+
+		<p class="details">Vous acceptez les 
+		<a href="cgu.html">CGU</a> 
+		et la 
+		<a href="politique_donnees.html">Politique d'utilisation des données.</a></p>
+
+	</section>
+
+
+	<footer>
+
+		&copy 2024 - Tous droits réservés
+
+	</footer>
+ 
+</body> 
+</html> 

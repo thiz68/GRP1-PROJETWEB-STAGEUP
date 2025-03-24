@@ -1,1 +1,0 @@
-ARCHITECTURE MVC - Fichier statiques (css, images, js)

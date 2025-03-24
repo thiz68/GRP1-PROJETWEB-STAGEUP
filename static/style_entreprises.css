@@ -1,0 +1,177 @@
+body {
+    background-color: #ffffff;
+    font-family: Arial;
+}
+
+.center {
+    display: block;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.principal {
+    background-color: #f1f1f1;
+}
+
+.active {
+    color: #AB1BEE !important;
+    font-weight: bold;
+}
+
+.nav_bar {
+    font-family: 'Arial';
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav_bar a:link {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.nav_bar a:visited {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.nav_bar a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.chemin {
+    font-family: 'Arial';
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #cacaca;
+    margin-top: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    gap: 20px;
+}
+
+.chemin a:link {
+    text-decoration: none;
+    color: #0051ff;
+}
+
+.chemin a:visited {
+    text-decoration: none;
+    color: #0051ff;
+}
+
+.chemin a:hover {
+    text-decoration: underline;
+}
+
+.chemin a:last-child {
+    color: #000000;
+}
+
+#inscription_button {
+    background-color: white;
+    color: black;
+    padding: 4px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.titre {
+    padding-top: 30px;
+    margin-top: 0px;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.texte {
+    padding-left: 15px;
+}
+
+.details {
+    padding-left: 15px;
+    padding-bottom: 10px;
+    font-size: 12px;
+    color: #858585;
+}
+
+
+#precedent {
+    margin-left: 15px;
+    padding: 7px;
+    text-align: center;
+    border: solid black 2px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-size: 12px;
+    font-family: century gothic;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+#suivant {
+    margin-left: 0px;
+    padding: 7px;
+    text-align: center;
+    border: none;
+    border-radius: 4px;
+    background-color: #AB1BEE;
+    font-size: 12px;
+    font-family: century gothic;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 20px;;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    font-style: italic;
+    font-size: 10px;;
+    font-family: century gothic;
+}
+
+ 
+  .liste_entreprises {
+    margin-left: 15px;
+    width: 95%;
+    table-layout: fixed;
+}
+
+th {
+    color: white;
+    background-color: #AB1BEE;
+    padding: 10px;
+    border-color: black;
+    text-align: center;
+    border-radius: 4px;
+}
+
+td {
+    text-align: center;
+    padding: 10px;
+    border-bottom: solid #AB1BEE 1px;
+    border-width: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+tr:nth-child(even) {
+    background-color: white;
+}
