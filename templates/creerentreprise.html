@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création Entreprise</title>
+    <link rel="stylesheet" href="assets/css/stylecreerentreprise.css">
+
+</head>
+<body>
+    <div class="container">
+        <h2 class="form-title">Création Entreprise</h2>
+        <form id="studentForm">
+            <div class="form-group">
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" name="nom" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" required>
+                <div id="emailError" class="error-message">Veuillez entrer un email valide</div>
+            </div> 
+            <div class="form-group">
+                <label for="tel">Numéro de téléphone</label>
+                <input type="tel" id="tel" name="tel" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea rows="4" placeholder="Description de l'entreprise"></textarea>
+            </div>
+            <div class="button-group">
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">Réinitialiser</button>
+                <button type="button" class="btn btn-return" onclick="goBack()">Retour</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+            
+        </form>
+    </div>
+
+    <footer class="footer"> 
+        <div class="footer-content"> 
+            <div class="footer-logo"> Web4All</div> 
+            <div class="footer-copyright"> 
+                © 2025 Web4All. Tous droits réservés.
+                <a href="mentionslegales.html" class="nav-link">Mentions Légales</a> 
+            </div> 
+        </div> 
+    </footer>
+
+    <script src="assets/js/creerentreprise.js"></script>
+</body>
+</html>
