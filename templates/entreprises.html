@@ -38,7 +38,13 @@
  
 		<p class="titre">Liste des entreprises</p>
 		<p class="texte">Affichage de la liste des entreprises (10 par page)</p>
-
+		<p class="texte">Note minimale de l'entreprise : </p>
+		<form id="slider-container" action="?uri=entreprises&page=1" method="get">
+			<input type="hidden" name="uri" value="entreprises">
+			<input type="hidden" name="page" value="1">
+			<input type="range" name="note_min" min="0" max="5" step="0.1" value="2.5">
+			<button type="submit">Filtrer</button>
+		</form>
 		<article>
 
             <table class="liste_entreprises"> 
@@ -47,7 +53,8 @@
                     <th>Nom</th>
                     <th>Description</th>
                     <th>Email</th>
-					<th>Téléphone</th>   
+					<th>Téléphone</th>
+					<th>Note</th>   
 					<th>Postuler</th>           
                 </tr>
 				
@@ -58,6 +65,7 @@
                         <td>{{ elem.description_enterprise }}</td>
                         <td>{{ elem.email_enterprise }}</td>
 						<td>{{ elem.tel_enterprise }}</td>
+						<td>{{ elem.average_rating_enterprise|default('N/A') }}</td>
                         <td><a href="?uri=offres&page=1&id_entreprise={{ elem.id_enterprise }}">Voir les offres</a></td>
                     </tr>
 				{% endfor %}

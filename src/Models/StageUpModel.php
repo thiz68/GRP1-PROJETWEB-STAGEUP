@@ -1,6 +1,26 @@
 <?php
 namespace grp1\STAGEUP\Models;
 
+use PDO;
+use PDOException;
+
+class Database {
+    private $pdo;
+
+    public function __construct($host, $dbname, $username, $password) {
+        try {
+            $this->pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        } catch (PDOException $message_erreur) {
+            die("Erreur de connexion à la BDD : " . $message_erreur->getMessage());
+        }
+    }
+
+    public function get_pdo() { return $this->pdo;}
+}
+
+
+
+
 class StageUpModel extends Model {
 
     public function __construct($connection = null) {
@@ -13,15 +33,32 @@ class StageUpModel extends Model {
             $this->connection = $connection;
 
         }
+
+        $this->pdo = $this->connection->get_pdo();
     }
 
-    public function getAllEntreprises() {
-        return $this->connection->getAllRecords('enterprises');
+
+
+
+    public function getEntreprises($note_min=0) {
+        try {
+            $donnees_brutes = $this->pdo->query("
+                SELECT * from enterprises where enterprises.average_rating_enterprise >= ".$note_min.";");
+            return $donnees_brutes->fetchAll();
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la récupération des entreprises : " . $message_erreur->getMessage());
+        }
     }
 
-    public function getAllOffres() {
-        return $this->connection->getAllRecords('offers');
+    public function getOffres() {
+        try {
+            $donnees_brutes = $this->pdo->query("SELECT * FROM offers");
+            return $donnees_brutes->fetchAll();
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la récupération des offres : " . $message_erreur->getMessage());
+        }
     }
 
 }
+
 ?>

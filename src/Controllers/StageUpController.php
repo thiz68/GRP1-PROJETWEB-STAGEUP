@@ -16,14 +16,15 @@ class StageUpController extends Controller {
 
     public function afficher_entreprises() {
         if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
-        $entreprises = $this->model->getAllEntreprises();
+        if (isset($_GET['note_min'])) : $note_min = (int)$_GET['note_min']; else : $note_min=0; endif;
+        $entreprises = $this->model->getEntreprises($note_min);
         $this->render('entreprises.html', ['entreprises' => $entreprises, 'page' => $page]);
     }
 
     public function afficher_offres() {
         if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
         if (isset($_GET['id_entreprise'])) : $id_entreprise = (int)$_GET['id_entreprise']; else : $id_entreprise=1; endif;
-        $offres = $this->model->getAllOffres();
+        $offres = $this->model->getOffres();
         $this->render('offres.html', ['offres' => $offres, 'page' => $page, 'id_entreprise' => $id_entreprise]);
     }
 }
