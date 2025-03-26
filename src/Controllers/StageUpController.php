@@ -1,7 +1,7 @@
 <?php 
 namespace grp1\STAGEUP\Controllers;
 
-use App\Models\StageUpModel;
+use grp1\STAGEUP\Models\StageUpModel;
 
 class StageUpController extends Controller {
 
@@ -16,15 +16,15 @@ class StageUpController extends Controller {
 
     public function afficher_entreprises() {
         if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
-        $enterprises = $this->model->getAllEntreprises();
-        $this->render('entreprises.html', ['enterprises' => $enterprises, 'page' => $page]);
+        $entreprises = $this->model->getAllEntreprises();
+        $this->render('entreprises.html', ['entreprises' => $entreprises, 'page' => $page]);
     }
 
     public function afficher_offres() {
         if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
-        if (isset($_GET['id_enterprise'])) : $id_enterprise = (int)$_GET['id_enterprise']; else : $id_enterprise=1; endif;
-        $offers = $this->model->getAllOffres();
-        $this->render('offres.html', ['offers' => $offers, 'page' => $page, 'id_enterprise' => $id_enterprise]);
+        if (isset($_GET['id_entreprise'])) : $id_entreprise = (int)$_GET['id_entreprise']; else : $id_entreprise=1; endif;
+        $offres = $this->model->getAllOffres();
+        $this->render('offres.html', ['offres' => $offres, 'page' => $page, 'id_entreprise' => $id_entreprise]);
     }
 }
 ?>
