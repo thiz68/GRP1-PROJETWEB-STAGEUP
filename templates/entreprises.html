@@ -3,15 +3,15 @@
 <head> 
 	<meta charset="utf-8">
 	<meta name="author" content="Clery G">
-	<link rel="stylesheet" href="http://stageup/static/style_entreprises.css">
-	<title>Lebonplan</title> 
+	<link rel="stylesheet" href="http://stage.up/static/style_entreprises.css">
+	<title>Stage Up</title> 
 </head> 
 
 <body>
 
 	<header>
 
-		<img class="center" src="http://stageup/static/logo_stageup.jpg" alt="Logo Lebonplan">
+		<img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
 		
 
 		<nav class="nav_bar">
@@ -45,20 +45,20 @@
 
                 <tr>
                     <th>Nom</th>
-                    <th>Descrption</th>
+                    <th>Description</th>
                     <th>Email</th>
 					<th>Téléphone</th>   
 					<th>Postuler</th>           
                 </tr>
 				
 
-                {% for elem in enterprises|slice((page-1)*10, 10) %}
+                {% for elem in entreprises|slice((page-1)*10, 10) %}
 					<tr>
                         <td>{{ elem.name_enterprise }}</td>
                         <td>{{ elem.description_enterprise }}</td>
                         <td>{{ elem.email_enterprise }}</td>
 						<td>{{ elem.tel_enterprise }}</td>
-                        <td><a href="?uri=offres&page=1&id_enterprise={{ elem.id_enterprise }}">Voir les offres</a></td>
+                        <td><a href="?uri=offres&page=1&id_entreprise={{ elem.id_enterprise }}">Voir les offres</a></td>
                     </tr>
 				{% endfor %}
 
@@ -68,7 +68,7 @@
 			<a href="?uri=entreprises&page={{ page_n }}">
 				<button id="precedent">Page précédente</button></a>
 			
-			{% if page*10 <= enterprises|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
+			{% if page*10 <= entreprises|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
             <a href="?uri=entreprises&page={{ page_n }}">
                 <button id="suivant">Page suivante</button></a>
         

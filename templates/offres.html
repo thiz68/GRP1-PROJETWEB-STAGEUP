@@ -3,7 +3,7 @@
 <head> 
 	<meta charset="utf-8">
 	<meta name="author" content="Clery G">
-	<link rel="stylesheet" href="http://stageup/static/style_offres.css">
+	<link rel="stylesheet" href="http://stage.up/static/style_offres.css">
 	<title>Lebonplan</title> 
 </head> 
 
@@ -11,14 +11,13 @@
 
 	<header>
 
-		<img class="center" src="http://stageup/static/logo_stageup.jpg" alt="Logo Lebonplan">
+		<img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
 		
 
 		<nav class="nav_bar">
 			<div class='nav_left'>
 				<a href="/">Accueil</a> | 
 				<a href="/?uri=entreprises">Entreprises</a> | 
-				<a href="/?uri=offres" class="active">Offres</a> | 
 				<a href="whishlist.html">Wishlist</a> | 
 				<a href="contact.html">Contact</a>
 			</div>
@@ -31,7 +30,7 @@
 		<nav class="chemin">
 			<a href="/">Accueil</a> > 
 			<a href="/?uri=entreprises">Entreprises</a> >
-			<a href="/?uri=offres">Offres</a>
+			<a href="/?uri=offres&page=1&id_entreprise={{id_entreprise}}">Offres</a>
 		</nav>
 
 	</header>
@@ -49,17 +48,17 @@
                     <th>Titre</th>
                     <th>Description</th>
 					<th>Rémunération</th>
-					<th>Date de débu</th>
+					<th>Date de début</th>
 					<th>Date de fin</th>
                 </tr>
-				{% set offers_correspondantes = [] %}
-                {% for elem in offers %}{% if elem.id_enterprise == id_enterprise %}
-					{% set offers_correspondantes = offers_correspondantes|merge([elem]) %}
+				{% set offres_correspondantes = [] %}
+                {% for elem in offres %}{% if elem.id_enterprise == id_entreprise %}
+					{% set offres_correspondantes = offres_correspondantes|merge([elem]) %}
 				{% endif %}{% endfor %}
-				{% for elem in offers_correspondantes|slice((page-1)*3, 3) %}
+				{% for elem in offres_correspondantes|slice((page-1)*3, 3) %}
 					<tr>
-						<td>{{ elem.titre }}</td>
-						<td>{{ elem.desc }}</td>
+						<td>{{ elem.title_offer }}</td>
+						<td>{{ elem.desc_offer }}</td>
 						<td>{{ elem.remun_offer }}</td>
 						<td>{{ elem.s_date_offer }}</td>
 						<td>{{ elem.e_date_offer }}</td>
@@ -69,11 +68,11 @@
             </table>
 
 			{% if page > 1 %}{% set page_n = page - 1 %}{% else %}{% set page_n = 1 %}{% endif %}
-			<a href="?uri=offres&page={{ page_n }}&id_enterprise={{id_enterprise}}">
+			<a href="?uri=offres&page={{ page_n }}&id_entreprise={{id_entreprise}}">
 				<button id="precedent">Page précédente</button></a>
 			
 			{% if page*3 <= offres_correspondantes|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
-            <a href="?uri=offres&page={{ page_n }}&id_enterprise={{id_enterprise}}">
+            <a href="?uri=offres&page={{ page_n }}&id_entreprise={{id_entreprise}}">
                 <button id="suivant">Page suivante</button></a>
         
 		</article>
