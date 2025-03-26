@@ -3,11 +3,13 @@ body {
     font-family: Arial;
 }
 
-.center {
+#head_logo {
     display: block;
     text-align: center;
     margin-right: auto;
     margin-left: auto;
+    max-width: 100px;
+    margin-bottom: 10px;
 }
 
 .principal {
@@ -103,6 +105,7 @@ body {
 .details {
     padding-left: 15px;
     padding-bottom: 10px;
+    margin-top: 0px;
     font-size: 12px;
     color: #858585;
 }
@@ -148,10 +151,11 @@ footer {
 }
 
  
-  .liste_entreprises {
+.liste_entreprises {
     margin-left: 15px;
     width: 95%;
     table-layout: fixed;
+    margin-bottom: 10px;
 }
 
 th {
@@ -170,6 +174,7 @@ td {
     border-width: 2px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 tr:nth-child(even) {
