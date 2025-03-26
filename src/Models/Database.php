@@ -20,8 +20,8 @@ class Database {
 
     public function getAllRecords($table) {
         try {
-            $donnees = $this->pdo->query("SELECT * FROM " . $table);
-            return $donnees->fetchAll();
+            $donnees_brutes = $this->pdo->query("SELECT * FROM " . $table);
+            return $donnees_brutes->fetchAll();
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération des données : " . $message_erreur->getMessage());
         }

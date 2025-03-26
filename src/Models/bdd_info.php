@@ -1,7 +1,7 @@
 <?php
 
-$host = 'sql109.infinityfree.com';
-$dbname = 'if0_38435188_StageUp';
-$username = 'if0_38435188';
-$password = 'PlmiW8dRDf';
+$host = '52.143.138.153';
+$dbname = 'stageup';
+$username = 'rem_38435188';
+$password = 'TydAbrkcD7q!sFO7';
 ?>
