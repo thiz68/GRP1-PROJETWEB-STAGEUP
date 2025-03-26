@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web4All - Connexion</title>
+    <link rel="stylesheet" href="style_connexion.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-form">
+            <h2>Connexion</h2>
+            <form method="post" action="#" id="connect-form">
+                <div class="input-box">
+                    <label>
+                        <input type="email" placeholder="Email" id="emailInput" required>
+                    </label>
+                    <img src="assets/images/user-fill.svg" class="icon" alt="Email Icon">
+                </div>
+                <div class="input-box">
+                    <label>
+                        <input type="password" placeholder="Mot de passe" id="passwordInput" required>
+                    </label>
+                    <img src="assets/images/lock-2-fill.svg" class="icon" alt="Password Icon">
+                </div>
+                <span class="errorMsg" id="errorMsg"></span>
+            <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+            <div>
+            <button class="login-button">Connexion</button>
+            </div>
+            <p class="legal-text">En appuyant sur "Connexion", vous acceptez nos <em>Mentions Légales</em></p>
+            </form>
+        </div>
+        <div class="side-banner">
+            <h1>Bonjour !</h1>
+            <p>Connectez-vous pour accéder à votre espace personnel.</p>
+        </div>
+    </div>
+</body>
+<script src="assets/js/connexion.js"></script>
+</html>
