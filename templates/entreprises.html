@@ -11,26 +11,24 @@
 
 	<header>
 
-		<img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+		
 		
 
-		<nav class="nav_bar">
-			<div class='nav_left'>
-				<a href="/">Accueil</a> | 
-				<a href="/?uri=entreprises" class="active">Entreprises</a> | 
-				<a href="whishlist.html">Wishlist</a> | 
-				<a href="contact.html">Contact</a>
-			</div>
-			<div class="nav_right">
-				<a href="connexion.html">Connexion</a> | 
-				<a href="inscription.html" id="inscription_button">S'inscrire</a>
-			</div>
-		</nav>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-left">
+      <a href="?uri=accueil" class="nav-link">Accueil</a>
+      <a href="wishlist.html" class="nav-link">Wishlist</a>
+      <a href="mesoffres.html" class="nav-link">Mes Offres</a>
+    </div>
+    <div class="nav-logo">
+        <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+    </div>
+    <div class="nav-right">
+      <a href="profil.html" class="nav-button">Mon compte</a>
+    </div>
+  </nav>
 
-		<nav class="chemin">
-			<a href="/">Accueil</a> > 
-			<a href="/?uri=entreprises">Entreprises</a>
-		</nav>
 
 	</header>
 
@@ -39,48 +37,64 @@
 		<p class="titre">Liste des entreprises</p>
 		<p class="texte">Affichage de la liste des entreprises (10 par page)</p>
 		<p class="texte">Note minimale de l'entreprise : </p>
-		<form id="slider-container" action="?uri=entreprises&page=1" method="get">
-			<input type="hidden" name="uri" value="entreprises">
+		<form id="slider-container" action="" method="get">
+      <input type="hidden" name="uri" value="entreprises">
 			<input type="hidden" name="page" value="1">
-			<input type="range" name="note_min" min="0" max="5" step="0.1" value="2.5">
-			<button type="submit">Filtrer</button>
+			<div style="margin-left: 15px; display: flex; align-items: center; gap: 10px;">
+				<label for="note_min">Note minimale :</label>
+				<input type="range" id="note_min" name="note_min" min="0" max="5" step="0.1" value="{{ note_min }}">
+				<span id="sliderValue">0 / 5</span>
+				<button type="submit" class="btn-purple">Filtrer</button>
+			</div>
 		</form>
+
+    <script>
+			const slider = document.getElementById('note_min');
+			const valueDisplay = document.getElementById('sliderValue');
+			
+			valueDisplay.textContent = slider.value + ' / 5';
+			
+			slider.addEventListener('input', () => {
+				valueDisplay.textContent = slider.value + ' / 5';
+			});
+		</script>
+
 		<article>
 
-            <table class="liste_entreprises"> 
+      <table class="liste_entreprises"> 
 
-                <tr>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Email</th>
-					<th>Téléphone</th>
-					<th>Note</th>   
-					<th>Postuler</th>           
-                </tr>
-				
+        <tr>
+          <th style="width: 200px;">Nom</th>
+          <th>Description</th>
+          <th style="width: 250px;">Email</th>
+          <th style="width: 120px;">Téléphone</th>
+          <th style="width: 70px;">Note</th>   
+          <th style="width: 130px;">Postuler</th>           
+        </tr>
 
-                {% for elem in entreprises|slice((page-1)*10, 10) %}
-					<tr>
-                        <td>{{ elem.name_enterprise }}</td>
-                        <td>{{ elem.description_enterprise }}</td>
-                        <td>{{ elem.email_enterprise }}</td>
-						<td>{{ elem.tel_enterprise }}</td>
-						<td>{{ elem.average_rating_enterprise|default('N/A') }}</td>
-                        <td><a href="?uri=offres&page=1&id_entreprise={{ elem.id_enterprise }}">Voir les offres</a></td>
-                    </tr>
-				{% endfor %}
 
-            </table>
+        {% for elem in entreprises|slice((page-1)*10, 10) %}
+        <tr>
+          <td>{{ elem.name_enterprise }}</td>
+          <td>{{ elem.description_enterprise }}</td>
+          <td>{{ elem.email_enterprise }}</td>
+          <td>{{ elem.tel_enterprise }}</td>
+          <td>{{ elem.average_rating_enterprise|default('N/A') }}</td>
+          <td><a href="?uri=offres&page=1&id_entreprise={{ elem.id_enterprise }}">Voir les offres</a></td>
+        </tr>
+        {% endfor %}
 
-			{% if page > 1 %}{% set page_n = page - 1 %}{% else %}{% set page_n = 1 %}{% endif %}
-			<a href="?uri=entreprises&page={{ page_n }}">
-				<button id="precedent">Page précédente</button></a>
-			
-			{% if page*10 <= entreprises|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
-            <a href="?uri=entreprises&page={{ page_n }}">
-                <button id="suivant">Page suivante</button></a>
-        
-		</article>
+      </table>
+
+      {% if page > 1 %}{% set page_n = page - 1 %}{% else %}{% set page_n = 1 %}{% endif %}
+      <a href="?uri=entreprises&page={{ page_n }}&note_min={{ note_min }}">
+      <button id="precedent">Page précédente</button></a>
+
+      {% if page*10 <= entreprises|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
+      <a href="?uri=entreprises&page={{ page_n }}&note_min={{ note_min }}">
+      <button id="suivant">Page suivante</button></a>
+
+    </article>
 
 		<p class="details">Vous acceptez les 
 		<a href="cgu.html">CGU</a> 
@@ -90,11 +104,18 @@
 	</section>
 
 
-	<footer>
-
-		&copy 2024 - Tous droits réservés
-
-	</footer>
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+    </div>
+    <div class="footer-copyright">
+      <p>&copy; 2025 Stage Up. Tous droits réservés.</p>
+      <a href="mentionslegales.html" class="nav-link">Mentions Légales</a>
+    </div>
+  </div>
+</footer>
 
 </body> 
 </html> 

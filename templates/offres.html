@@ -4,75 +4,91 @@
 	<meta charset="utf-8">
 	<meta name="author" content="Clery G">
 	<link rel="stylesheet" href="http://stage.up/static/style_offres.css">
-	<title>Lebonplan</title> 
+	<title>Stage Up</title> 
 </head> 
 
 <body>
 
 	<header>
 
-		<img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
-		
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-left">
+      <a href="?uri=accueil" class="nav-link">Accueil</a>
+      <a href="wishlist.html" class="nav-link">Wishlist</a>
+      <a href="mesoffres.html" class="nav-link">Mes Offres</a>
+    </div>
+    <div class="nav-logo">
+        <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+    </div>
+    <div class="nav-right">
+      <a href="profil.html" class="nav-button">Mon compte</a>
+    </div>
+  </nav>
 
-		<nav class="nav_bar">
-			<div class='nav_left'>
-				<a href="/">Accueil</a> | 
-				<a href="/?uri=entreprises">Entreprises</a> | 
-				<a href="whishlist.html">Wishlist</a> | 
-				<a href="contact.html">Contact</a>
-			</div>
-			<div class="nav_right">
-				<a href="connexion.html">Connexion</a> | 
-				<a href="inscription.html" id="inscription_button">S'inscrire</a>
-			</div>
-		</nav>
 
-		<nav class="chemin">
-			<a href="/">Accueil</a> > 
-			<a href="/?uri=entreprises">Entreprises</a> >
-			<a href="/?uri=offres&page=1&id_entreprise={{id_entreprise}}">Offres</a>
-		</nav>
+</header>
 
-	</header>
 
 	<section class="principal">
  
 		<p class="titre">Liste des offres</p>
 		<p class="texte">Affichage de la liste des offres pour une entreprise (3 par page)</p>
+		<form id="slider-container" action="" method="get">
+			<input type="hidden" name="uri" value="offres">
+			<input type="hidden" name="page" value="1">
+			<input type="hidden" name="id_entreprise" value="{{ id_entreprise }}">
+			<div style="margin-left: 15px; display: flex; align-items: center; gap: 10px;">
+				<label for="salaire_min">Salaire minimum :</label>
+				<input type="range" id="salaire_min" name="salaire_min" min="0" max="3000" step="100" value="{{ salaire_min }}">
+				<span id="sliderValue">0 €</span>
+				<button type="submit" class="btn-purple">Filtrer</button>
+			</div>
+		</form>
+
+		<script>
+			const slider = document.getElementById('salaire_min');
+			const valueDisplay = document.getElementById('sliderValue');
+			
+			valueDisplay.textContent = slider.value + ' €';
+			
+			slider.addEventListener('input', () => {
+				valueDisplay.textContent = slider.value + ' €';
+			});
+		</script>
 
 		<article>
 
             <table class="liste_offres"> 
 
                 <tr>
-                    <th>Titre</th>
+                    <th style="width: 300px;">Titre</th>
                     <th>Description</th>
-					<th>Rémunération</th>
-					<th>Date de début</th>
-					<th>Date de fin</th>
+					<th style="width: 100px;">Rémunération</th>
+					<th style="width: 120px;">Date de début</th>
+					<th style="width: 120px;">Date de fin</th>
+					<th style="width: 120px;">Postuler</th>
                 </tr>
-				{% set offres_correspondantes = [] %}
-                {% for elem in offres %}{% if elem.id_enterprise == id_entreprise %}
-					{% set offres_correspondantes = offres_correspondantes|merge([elem]) %}
-				{% endif %}{% endfor %}
-				{% for elem in offres_correspondantes|slice((page-1)*3, 3) %}
+				
+				{% for elem in offres|slice((page-1)*3, 3) %}
 					<tr>
 						<td>{{ elem.title_offer }}</td>
 						<td>{{ elem.desc_offer }}</td>
 						<td>{{ elem.remun_offer }}</td>
 						<td>{{ elem.s_date_offer }}</td>
 						<td>{{ elem.e_date_offer }}</td>
+						<td><a href="?uri=postuler&id_offre={{ elem.id_offers }}">Postuler</a></td>
 					</tr>
 				{% endfor %}
 
             </table>
 
 			{% if page > 1 %}{% set page_n = page - 1 %}{% else %}{% set page_n = 1 %}{% endif %}
-			<a href="?uri=offres&page={{ page_n }}&id_entreprise={{id_entreprise}}">
+			<a href="?uri=offres&page={{ page_n }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}">
 				<button id="precedent">Page précédente</button></a>
 			
-			{% if page*3 <= offres_correspondantes|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
-            <a href="?uri=offres&page={{ page_n }}&id_entreprise={{id_entreprise}}">
+			{% if page*3 <= offres|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
+            <a href="?uri=offres&page={{ page_n }}&id_entreprise={{ id_entreprise }}&salaire_min={{ 5 }}">
                 <button id="suivant">Page suivante</button></a>
         
 		</article>
@@ -85,11 +101,18 @@
 	</section>
 
 
-	<footer>
-
-		&copy 2024 - Tous droits réservés
-
-	</footer>
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2025 Stage Up. Tous droits réservés.</p>
+        <a href="mentionslegales.html" class="nav-link">Mentions Légales</a>
+      </div>
+    </div>
+  </footer>
  
 </body> 
 </html> 
