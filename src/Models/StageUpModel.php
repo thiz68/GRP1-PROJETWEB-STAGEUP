@@ -40,25 +40,26 @@ class StageUpModel extends Model {
 
 
 
-    public function getEntreprises($note_min=0) {
+    public function getEntreprises($note_min=0.0) {
         try {
-            $donnees_brutes = $this->pdo->query("
+            $donnees = $this->pdo->query("
                 SELECT * from enterprises where enterprises.average_rating_enterprise >= ".$note_min.";");
-            return $donnees_brutes->fetchAll();
+            return $donnees->fetchAll();
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération des entreprises : " . $message_erreur->getMessage());
         }
     }
 
-    public function getOffres() {
+    public function getOffres($id_entreprise, $salaire_min=0) {
         try {
-            $donnees_brutes = $this->pdo->query("SELECT * FROM offers");
-            return $donnees_brutes->fetchAll();
+            $donnees = $this->pdo->query("
+                SELECT * from offers where offers.id_enterprise = ".$id_entreprise." 
+                and offers.remun_offer >= ".$salaire_min.";");
+            return $donnees->fetchAll();
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération des offres : " . $message_erreur->getMessage());
         }
     }
-
 }
 
 ?>
