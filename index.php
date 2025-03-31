@@ -1,16 +1,31 @@
 <?php
+
 require "vendor/autoload.php";
 
 use grp1\STAGEUP\Controllers\StageUpController;
+use grp1\STAGEUP\Services\SessionManager;
 
 $loader = new \Twig\Loader\FilesystemLoader('templates');
 $twig = new \Twig\Environment($loader, [
     'debug' => true
 ]);
 
+SessionManager::startSession();
+if (SessionManager::isUserLoggedIn() && !SessionManager::validateSession()) {
+    // Rediriger vers la page de connexion si la session est invalide
+    header('Location: /?uri=connexion&expired=1');
+    exit;
+}
+
 if (isset($_GET['uri'])) {
     $uri = $_GET['uri'];
-} else {
+} 
+
+elseif (isset($_POST['uri'])) {
+    $uri = $_POST['uri'];
+}
+
+else {
     $uri = '/';
 }
 
@@ -21,11 +36,56 @@ switch ($uri) {
         $controller->page_accueil();
         break;
     case 'entreprises':
-        $controller->afficher_entreprises();
+        $controller->liste_entreprises();
         break;
     case 'offres':
-        $controller->afficher_offres();
+        $controller->liste_offres();
         break;
+    case 'page_entreprise':
+        $controller->page_entreprise();
+        break;
+    case 'noter_entreprise':
+        $controller->noter_entreprise();
+        break;
+    case 'page_creer_compte_pilote':
+        $controller->page_creer_compte_pilote();
+        break;      
+    case 'creer_compte_pilote':
+        $controller->creer_compte_pilote();
+        break;
+    case 'page_creer_compte_etudiant':
+        $controller->page_creer_compte_etudiant();
+        break;   
+    case 'creer_compte_etudiant':
+        $controller->creer_compte_etudiant();
+        break;   
+    case 'page_creer_entreprise':
+        $controller->page_creer_entreprise();
+        break;   
+    case 'creer_entreprise':
+        $controller->creer_entreprise();
+        break; 
+    
+    case 'connexion':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $controller->login();
+        } else {
+            SessionManager::startSession();
+            $login_error = $_SESSION['login_error'] ?? null;
+            $login_email = $_SESSION['login_email'] ?? null;
+
+            unset($_SESSION['login_error'], $_SESSION['login_email']);
+
+            $controller->afficher_login($login_error, $login_email);
+        }
+        break;
+    case 'profil':
+        $controller->afficher_profil();
+        break;
+    case 'logout':
+        $controller->logout();
+        break;
+    
     default:
         echo '404 Not Found';
         break;
