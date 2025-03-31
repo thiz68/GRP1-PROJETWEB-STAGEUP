@@ -19,14 +19,13 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Helvetica', 'Arial', sans-serif;
-    transition: all 0.4s ease-in-out;
 }
 
 html, body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
-    height: 100%; /* Assure que la page prend toute la hauteur */
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -40,90 +39,48 @@ h2{
     text-align: center;
 }
 
-.zone{
-    gap: 1rem; /* Ajoute de l’espace entre les éléments */
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.profile-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: 2rem auto;
+}
+.header {
     text-align: center;
-    height: 100vh;
-    color: white;
-
-    .section-title{
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 5rem;
-    }
-    p{
-        font-size: 1rem;
-        font-weight: bold;
-    }
+    margin-bottom: 20px;
 }
-.zone a {
-    flex: 1;
-    text-decoration: none; /* Supprime le soulignement */
-    color: inherit; /* Utilise la couleur du texte parent */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 7rem;
-    text-align: center;
-    width: 40rem;
-    min-width: 28rem;
-    max-width: 45rem;
-    padding: 2rem;
-    overflow: hidden; /* Empêche les images de sortir */
-    height: auto; /* Il faut que toute les images/icons faissent la même taille */
-    margin: 2rem; /* Ajoute un espace autour de chaque rectangle */
-    transition: width 0.4s ease, height 0.4s ease, border-radius 0.4s ease;
-    transition: background-color var(--transition-default), color var(--transition-default);
+.header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
 }
-
-.zone a img {
-    max-width: 45rem;
-    height: auto;
-    max-height: 200px; /* Ajuste la hauteur max */
-    object-fit: cover; /* Ajuste bien l’image */
-    border-radius: 10rem;
+.header h2 {
+    margin: 10px 0 5px;
 }
-
-.zone a:hover {
-    text-decoration: none; /* Supprime le soulignement au survol */
-    color: inherit; /* Utilise la couleur du texte parent au survol */
+.header p {
+    color: gray;
+    font-size: 14px;
 }
-.offer{
-    background-color: #ab1bee;
-    cursor:grab;
+.info {
+    margin-top: 10px;
 }
-.offer:hover{
-    background-color: #ae789b;
+.info h3 {
+    margin-bottom: 5px;
+    color: #ab1bee;
 }
-
-.entrep{
-    background-color: #2a083a;
-    cursor:grab;
+.info p {
+    margin: 5px 0;
 }
-.entrep:hover{
-    background-color: #501d67;
-}
-
-.WishList{
-    background-color: #591877;
-    cursor:grab;
-}
-.WishList:hover{
-    background-color: #8340a2;
-}
-
 
 /* Navbar Styles */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 0.5rem 1rem;
     background-color: var(--white);
     box-shadow: var(--box-shadow);
     position: sticky;
@@ -198,19 +155,22 @@ h2{
     background-color: var(--primary-dark);
 }
 
+
 /* Footer Styles */
 .footer {
+    margin-top: auto;
     background-color: var(--white);
     padding: 2rem;
-    margin-top: 2rem;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .footer-content {
     max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-align: center;
 }
 
 .footer-logo h2 {
@@ -221,6 +181,33 @@ h2{
 .footer-copyright {
     color: var(--dark-gray);
     font-size: 0.9rem;
+}
+
+.footer-link {
+    text-decoration: none;
+    color: var(--text-color);
+    position: relative;
+    padding-bottom: 5px;
+    transition: color var(--transition-default);
+}
+
+.footer-link:hover {
+    color: var(--primary-color);
+}
+
+.footer-link.active {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.footer-link.active::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+    bottom: 0;
+    left: 0;
 }
 
 /* Responsive Adjustments */
@@ -244,7 +231,7 @@ h2{
 /* Mode Mobile */
 @media (max-width: 1517px) {
     body {
-        font-size: 14px;
+        font-size: 12px;
     }
     .zone {
         flex-direction: column;
@@ -266,12 +253,11 @@ h2{
         justify-content: center;
         flex-wrap: wrap;
     }
-    .nav-link {
-        margin: 0.5rem;
-    }
-    .footer-content {
-        flex-direction: column;
+
+    .footer-content{
+        display: flex;
         text-align: center;
+
     }
 }
 
@@ -281,4 +267,3 @@ h2{
         height: 8rem;
     }
 }
-
