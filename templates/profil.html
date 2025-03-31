@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="nosniff">
+    <meta http-equiv="x-ua-compatible" content="DENY">
+    <title>Page d'accueil</title>
+    <link rel="stylesheet" href="http://stage.up/static/profil.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-left">
+        <a href='/' class="nav-link">Accueil</a>
+        <a href=# class="nav-link">WishList</a>
+        <a href=# class="nav-link">Mes offres</a>
+    </div>
+    <div class="nav-logo">
+        <a href=# class="nav-link"><h1>Stage Up</h1></a>
+    </div>
+    <div class="nav-right">
+        <a href="?uri=profil" class="nav-button">Mon compte</a>
+    </div>
+</nav>
+
+<div class="profile-container">
+    <h2>Bienvenue {{ user.firstname_user }} {{ user.lastname_user }}</h2>
+    <div class="info">
+    <h3>Email :</h3>
+    <p>{{ user.email_user }}</p>
+    </div>
+    <div class="info">
+        <h3>Rôle :</h3>
+        <p>{{ user.name_rank }}</p>
+    </div>
+    <a href="/?uri=logout">Déconnexion</a>
+</div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <h2>Stage Up</h2>
+        </div>
+        <div class="footer-copyright">
+            <p>&copy; 2025 Stage Up. Tous droits réservés.</p>
+            <a href=# class="footer-link">Mentions légales</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

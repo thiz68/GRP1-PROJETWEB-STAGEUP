@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html> 
+<head> 
+	<meta charset="utf-8">
+	<meta name="author" content="Clery G">
+    <link rel="stylesheet" href="http://stage.up/static/creer_compte_etudiant.css">
+	<title>Création d'un compte etudiant</title> 
+</head> 
+
+
+
+	<header>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="nav-left">
+            <a href="/" class="nav-link">Accueil</a>
+            <a href="wishlist.html" class="nav-link">Wishlist</a>
+            <a href="mesoffres.html" class="nav-link">Mes Offres</a>
+            </div>
+            <div class="nav-logo">
+                <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+            </div>
+            <div class="nav-right">
+            <a href="profil.html" class="nav-button">Mon compte</a>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        <form class="modification-form" action="index.php" method="post">
+            <input type="hidden" name="uri" value="creer_compte_etudiant">
+            <h1>Création compte etudiant</h1>
+            
+            <div class="form-group">
+                <label for="nouveau-nom">Nom</label>
+                <input type="text" id="nouveau-nom" name="nom">
+            </div>
+            
+            <div class="form-group">
+                <label for="nouveau-prenom">Prénom</label>
+                <input type="text" id="nouveau-prenom" name="prenom">
+            </div>
+            
+            <div class="form-group">
+                <label for="nouvel-email">Email</label>
+                <input type="email" id="nouvel-email" name="email">
+            </div>
+
+            <div class="form-group">
+                <label for="mot-de-passe">Mot de Passe</label>
+                <input type="password" id="mot-de-passe" name="mot_de_passe">
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+            </div>
+        </form>
+    </div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2025 Web4All. Tous droits réservés.</p>
+        <a href="mentionslegales.html" class="nav-link">Mentions Légales</a>
+      </div>
+    </div>
+  </footer>
+    
+</body>
+</html>

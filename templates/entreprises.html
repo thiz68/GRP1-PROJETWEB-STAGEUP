@@ -17,7 +17,7 @@
 <!-- Navbar -->
 <nav class="navbar">
     <div class="nav-left">
-      <a href="?uri=accueil" class="nav-link">Accueil</a>
+      <a href="/" class="nav-link">Accueil</a>
       <a href="wishlist.html" class="nav-link">Wishlist</a>
       <a href="mesoffres.html" class="nav-link">Mes Offres</a>
     </div>
@@ -25,7 +25,7 @@
         <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
     </div>
     <div class="nav-right">
-      <a href="profil.html" class="nav-button">Mon compte</a>
+      <a href="?uri=profil" class="nav-button">Mon compte</a>
     </div>
   </nav>
 
@@ -75,7 +75,7 @@
 
         {% for elem in entreprises|slice((page-1)*10, 10) %}
         <tr>
-          <td>{{ elem.name_enterprise }}</td>
+          <td><a href="?uri=page_entreprise&id_entreprise={{elem.id_enterprise}}" style="color: inherit; text-decoration: none;">{{ elem.name_enterprise }}</a></td>
           <td>{{ elem.description_enterprise }}</td>
           <td>{{ elem.email_enterprise }}</td>
           <td>{{ elem.tel_enterprise }}</td>

@@ -9,12 +9,12 @@
 
 <body>
 
-	<header>
+<header>
 
 <!-- Navbar -->
 <nav class="navbar">
     <div class="nav-left">
-      <a href="?uri=accueil" class="nav-link">Accueil</a>
+      <a href="/" class="nav-link">Accueil</a>
       <a href="wishlist.html" class="nav-link">Wishlist</a>
       <a href="mesoffres.html" class="nav-link">Mes Offres</a>
     </div>
@@ -22,10 +22,9 @@
         <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
     </div>
     <div class="nav-right">
-      <a href="profil.html" class="nav-button">Mon compte</a>
+      <a href="?uri=profil" class="nav-button">Mon compte</a>
     </div>
   </nav>
-
 
 </header>
 
@@ -33,7 +32,7 @@
 	<section class="principal">
  
 		<p class="titre">Liste des offres</p>
-		<p class="texte">Affichage de la liste des offres pour une entreprise (3 par page)</p>
+		<p class="texte">Affichage de la liste des offres (5 par page)</p>
 		<form id="slider-container" action="" method="get">
 			<input type="hidden" name="uri" value="offres">
 			<input type="hidden" name="page" value="1">
@@ -70,7 +69,7 @@
 					<th style="width: 120px;">Postuler</th>
                 </tr>
 				
-				{% for elem in offres|slice((page-1)*3, 3) %}
+				{% for elem in offres|slice((page-1)*5, 5) %}
 					<tr>
 						<td>{{ elem.title_offer }}</td>
 						<td>{{ elem.desc_offer }}</td>
@@ -87,8 +86,8 @@
 			<a href="?uri=offres&page={{ page_n }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}">
 				<button id="precedent">Page précédente</button></a>
 			
-			{% if page*3 <= offres|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
-            <a href="?uri=offres&page={{ page_n }}&id_entreprise={{ id_entreprise }}&salaire_min={{ 5 }}">
+			{% if page*5 <= offres|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
+            <a href="?uri=offres&page={{ page_n }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}">
                 <button id="suivant">Page suivante</button></a>
         
 		</article>
