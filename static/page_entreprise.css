@@ -117,37 +117,6 @@ body {
     background-color: var(--primary-dark);
 }
 
-.chemin {
-    font-family: 'Arial';
-    text-decoration: none;
-    color: #ffffff;
-    background-color: #cacaca;
-    margin-top: 5px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
-    display: flex;
-    gap: 20px;
-}
-
-.chemin a:link {
-    text-decoration: none;
-    color: #0051ff;
-}
-
-.chemin a:visited {
-    text-decoration: none;
-    color: #0051ff;
-}
-
-.chemin a:hover {
-    text-decoration: underline;
-}
-
-.chemin a:last-child {
-    color: #000000;
-}
 
 #inscription_button {
     background-color: white;
@@ -268,17 +237,10 @@ td {
     font-weight: bold;
     cursor: pointer;
   }
-  
 
-tr:nth-child(even) {
-    background-color: white;
-}
-
-a {
-    color: #AB1BEE;
-}
 
 /* Style du curseur de note */
+
   
   /* Chrome & Safari */
   input[type="range"]::-webkit-slider-thumb {
@@ -320,5 +282,12 @@ a {
     border-radius: 50%;
     cursor: pointer;
   }
-
   
+
+tr:nth-child(even) {
+    background-color: white;
+}
+
+a {
+    color: #AB1BEE;
+}
