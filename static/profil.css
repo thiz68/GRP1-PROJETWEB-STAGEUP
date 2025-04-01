@@ -149,12 +149,60 @@ h2{
     border-radius: var(--border-radius);
     text-decoration: none;
     transition: background-color var(--transition-default);
+    
 }
 
 .nav-button:hover {
     background-color: var(--primary-dark);
 }
 
+.low-button1 {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: background-color var(--transition-default);
+    margin:2px ;
+    margin-top: 10px ;
+    
+}
+
+.low-button1:hover {
+    background-color: var(--primary-dark);
+}
+
+.low-button2 {
+    background-color: var(--primary-dark);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: background-color var(--transition-default);
+    margin:2px ;
+    margin-top: 10px ;
+    
+}
+
+.low-button2:hover {
+    background-color: var(--primary-dark);
+}
+
+.low-button3 {
+    background-color: var(--text-color);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: background-color var(--transition-default);
+    margin:2px ;
+    margin-top: 10px ;
+    
+}
+
+.low-button3:hover {
+    background-color: var(--primary-dark);
+}
 
 /* Footer Styles */
 .footer {
@@ -266,4 +314,13 @@ h2{
         width: 90%;
         height: 8rem;
     }
+}
+
+.user_logo {
+    display: block;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 100px;
+    margin-bottom: 10px;
 }

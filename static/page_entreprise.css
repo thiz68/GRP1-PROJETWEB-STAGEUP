@@ -238,6 +238,19 @@ td {
     cursor: pointer;
   }
 
+.creer_modifier {
+    background-color: #AB1BEE;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 15px;
+    font-weight: bold;
+}
+  
+
 
 /* Style du curseur de note */
 

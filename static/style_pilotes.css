@@ -233,7 +233,7 @@ body {
 }
 
  
-.liste_entreprises {
+.liste_pilotes {
     margin-left: 15px;
     width: 95%;
     table-layout: fixed;
@@ -269,7 +269,7 @@ td {
     cursor: pointer;
   }
 
-#creer_entreprise {
+#creer_compte {
     background-color: #AB1BEE;
     color: white;
     border: none;

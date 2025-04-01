@@ -233,7 +233,7 @@ body {
 }
 
  
-.liste_entreprises {
+.liste_etudiants {
     margin-left: 15px;
     width: 95%;
     table-layout: fixed;
@@ -269,7 +269,7 @@ td {
     cursor: pointer;
   }
 
-#creer_entreprise {
+#creer_compte {
     background-color: #AB1BEE;
     color: white;
     border: none;
@@ -280,7 +280,6 @@ td {
     margin-left: 15px;
     font-weight: bold;
 }
-  
   
 
 tr:nth-child(even) {

@@ -20,7 +20,7 @@ function includeHTML() {
       const link = document.createElement('link');
       link.id = cssId;
       link.rel = 'stylesheet';
-      link.href = 'css/navbar-footer.css';
+      link.href = 'http://stage.up/static/navbar-footer.css';
       document.head.appendChild(link);
     }
   }

@@ -23,15 +23,6 @@ body {
     min-height: 100vh;
 }
 
-#head_logo {
-    display: block;
-    text-align: center;
-    margin-right: auto;
-    margin-left: auto;
-    max-width: 100px;
-    margin-bottom: 10px;
-}
-
 .container {
     flex-grow: 1;
     display: flex;
@@ -59,6 +50,18 @@ h1 {
 .form-group {
     margin-bottom: 15px;
 }
+
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
 
 label {
     display: block;
@@ -155,6 +158,11 @@ footer {
     text-align: center;
     flex: 1;
 }
+
+#head_logo {
+    max-width: 100px;
+}
+
 
 .nav-logo h1 {
     color: var(--primary-color);
