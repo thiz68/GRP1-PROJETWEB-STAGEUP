@@ -65,7 +65,44 @@ switch ($uri) {
     case 'creer_entreprise':
         $controller->creer_entreprise();
         break; 
-    
+    case 'page_creer_offre':
+        $controller->page_creer_offre();
+        break;   
+    case 'creer_offre':
+        $controller->creer_offre();
+        break; 
+    case 'etudiants':
+        $controller->liste_etudiants();
+        break;
+    case 'pilotes':
+        $controller->liste_pilotes();
+        break;
+    case 'page_modif_compte_etudiant':
+        $controller->page_modif_compte_etudiant();
+        break;
+    case 'modif_compte_etudiant':
+        $controller->modif_compte_etudiant();
+        break;
+    case 'page_modif_compte_pilote':
+        $controller->page_modif_compte_pilote();
+        break;
+    case 'modif_compte_pilote':
+        $controller->modif_compte_pilote();
+        break;
+    case 'page_modif_entreprise':
+        $controller->page_modif_entreprise();
+        break;
+    case 'modif_entreprise':
+        $controller->modif_entreprise();
+        break;
+    case 'page_modif_offre':
+        $controller->page_modif_offre();
+        break;
+    case 'modif_offre':
+        $controller->modif_offre();
+        break;
+
+
     case 'connexion':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $controller->login();
