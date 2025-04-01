@@ -86,6 +86,9 @@
 
       </table>
 
+      <a href="?uri=page_creer_entreprise" id="creer_entreprise">Creer une entreprise</a>
+      <br><br>
+
       {% if page > 1 %}{% set page_n = page - 1 %}{% else %}{% set page_n = 1 %}{% endif %}
       <a href="?uri=entreprises&page={{ page_n }}&note_min={{ note_min }}">
       <button id="precedent">Page précédente</button></a>
@@ -95,12 +98,7 @@
       <button id="suivant">Page suivante</button></a>
 
     </article>
-
-		<p class="details">Vous acceptez les 
-		<a href="cgu.html">CGU</a> 
-		et la 
-		<a href="politique_donnees.html">Politique d'utilisation des données.</a></p>
-
+    
 	</section>
 
 

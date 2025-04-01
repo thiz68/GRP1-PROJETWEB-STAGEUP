@@ -1,0 +1,92 @@
+
+<html> 
+<head> 
+	<meta charset="utf-8">
+	<meta name="author" content="Clery G">
+	<link rel="stylesheet" href="http://stage.up/static/style_etudiants.css">
+	<title>Stage Up</title> 
+</head> 
+
+<body>
+
+<header>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-left">
+      <a href="/" class="nav-link">Accueil</a>
+      <a href="wishlist.html" class="nav-link">Wishlist</a>
+      <a href="mesoffres.html" class="nav-link">Mes Offres</a>
+    </div>
+    <div class="nav-logo">
+        <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+    </div>
+    <div class="nav-right">
+      <a href="?uri=profil" class="nav-button">Mon compte</a>
+    </div>
+  </nav>
+
+
+	</header>
+
+	<section class="principal">
+ 
+		<p class="titre">Liste des etudiants</p>
+		<p class="texte">Affichage de la liste des etudiants (10 par page)</p>
+
+		<article>
+
+      <table class="liste_etudiants"> 
+
+        <tr>
+          <th style="width: 200px;">Nom</th>
+          <th style="width: 200px;">Prénom</th>
+          <th>Email</th>
+          <th style="width: 100px;">Nombre de candidatures</th>
+          <th style="width: 130px;">Modifier</th>           
+        </tr>
+
+
+        {% for elem in etudiants|slice((page-1)*10, 10) %}
+        <tr>
+          <td>{{ elem.lastname_user }}</a></td>
+          <td>{{ elem.firstname_user }}</td>
+          <td>{{ elem.email_user }}</td>
+          <td>{{ elem.nb_candidatures }}</td>
+          <td><a href="?uri=page_modif_compte_etudiant&id_etudiant={{ elem.id_user }}">Modifier le compte</a></td>
+        </tr>
+        {% endfor %}
+
+      </table>
+
+      <a href="?uri=page_creer_compte_etudiant" id="creer_compte">Creer un compte étudiant</a>
+      <br><br>
+
+      {% if page > 1 %}{% set page_n = page - 1 %}{% else %}{% set page_n = 1 %}{% endif %}
+      <a href="?uri=etudiants&page={{ page_n }}">
+      <button id="precedent">Page précédente</button></a>
+
+      {% if page*10 <= etudiants|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
+      <a href="?uri=etudiants&page={{ page_n }}">
+      <button id="suivant">Page suivante</button></a>
+
+    </article>
+
+	</section>
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+    </div>
+    <div class="footer-copyright">
+      <p>&copy; 2025 Stage Up. Tous droits réservés.</p>
+      <a href="mentionslegales.html" class="nav-link">Mentions Légales</a>
+    </div>
+  </div>
+</footer>
+
+</body> 
+</html> 

@@ -4,11 +4,12 @@
 <head> 
 	<meta charset="utf-8">
 	<meta name="author" content="Clery G">
-	<link rel="stylesheet" href="http://stage.up/static/creer_entreprise.css">
-	<title>Création d'une Entreprise</title> 
+	<link rel="stylesheet" href="http://stage.up/static/modif_entreprise.css">
+    
+	<title>Modification du compte Étudiant</title> 
 </head> 
 
-
+<body>
 
 	<header>
         <!-- Navbar -->
@@ -26,35 +27,36 @@
             </div>
         </nav>
     </header>
-
+<body>
 
     <div class="container">
         <form class="modification-form" action="index.php" method="post">
-            <input type="hidden" name="uri" value="creer_entreprise">
-            <h1>Création d'une Entreprise</h1>
+            <input type="hidden" name="uri" value="modif_entreprise">
+            <input type="hidden" name="id_entreprise" value="{{ id_entreprise }}">
+            <h1>Modification d'une entreprise</h1>
             
             <div class="form-group">
-                <label for="nouveau-nom">Nom</label>
+                <label for="nouveau-nom">Nouveau nom</label>
                 <input type="text" id="nouveau-nom" name="nom">
             </div>
             
             <div class="form-group">
-                <label for="nouvel-email">Email</label>
-                <input type="email" id="nouvel-email" name="email">
-            </div>
-
-            <div class="form-group">
-                <label for="phone-number">Numéro de téléphone</label>
-                <input type="text" id="phone-number" name="tel">
+                <label for="description">Nouvelle description</label>
+                <input type="text" id="description" name="description">
             </div>
             
             <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" rows="4" placeholder="Ajoutez une courte description..."></textarea>
+                <label for="email">Nouvel email</label>
+                <input type="email" id="email" name="email">
+            </div>
+
+            <div class="form-group">
+                <label for="tel">Nouveau téléphone</label>
+                <input type="text" id="tel" name="tel">
             </div>
 
             <div class="button-group">
-                <a class ="btn btn-secondary" href="http://stage.up/template/supprconfirmcompte.html" class="nav-link">Supprimer le compte</a>
+                <a class ="btn btn-secondary" href="?uri=supp_entreprise" class="nav-link">Supprimer l'entreprise</a>
                 <button type="submit" class="btn btn-primary">Sauvegarder</button>
             </div>
         </form>
@@ -67,13 +69,13 @@
         <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
       </div>
       <div class="footer-copyright">
-        <p>&copy; 2025 StageUp. Tous droits réservés.</p>
+        <p>&copy; 2025 Web4All. Tous droits réservés.</p>
         <a href="mentionslegales.html" class="nav-link">Mentions Légales</a>
       </div>
     </div>
   </footer>
-  
-  <script>
+    
+<script>
             // Fonction de validation d'email
             function validateEmail(email) {
             // Vérifie la présence de @ et de .
@@ -173,46 +175,7 @@
         function goBack() {
             window.history.back();
         }
-
-        // Fonction pour valider le numéro de téléphone
-function validatePhoneInput() {
-    const telInput = document.getElementById('tel');
-    
-    // Écouteur d'événement pour empêcher l'entrée de lettres
-    telInput.addEventListener('input', function(e) {
-        // Remplace tous les caractères non-numériques par une chaîne vide
-        this.value = this.value.replace(/[^\d+\s()-]/g, '');
-    });
-
-    // Validation à la soumission du formulaire
-    telInput.addEventListener('blur', function() {
-        const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
-        const errorMessage = document.createElement('div');
-        errorMessage.id = 'telError';
-        errorMessage.style.color = 'red';
-        errorMessage.style.fontSize = '0.8em';
-        errorMessage.style.marginTop = '5px';
-
-        // Supprime toute erreur précédente
-        const existingError = document.getElementById('telError');
-        if (existingError) {
-            existingError.remove();
-        }
-
-        // Vérifie la validité du numéro de téléphone
-        if (this.value.trim() !== '' && !phoneRegex.test(this.value)) {
-            this.classList.add('invalid');
-            errorMessage.textContent = 'Veuillez entrer un numéro de téléphone valide';
-            this.parentNode.insertBefore(errorMessage, this.nextSibling);
-        } else {
-            this.classList.remove('invalid');
-        }
-    });
-}
-
-// Appeler la fonction de validation
-validatePhoneInput();
-  </script>
+</script>
 
 </body>
 </html>

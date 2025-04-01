@@ -6,22 +6,13 @@
 	<meta http-equiv="content-type" content="nosniff">
 	<meta http-equiv="x-ua-compatible" content="DENY">
 	<title>Page d'accueil</title>
+	<script src="http://stage.up/static/include.js" defer></script>
 	<link rel="stylesheet" href="http://stage.up/static/styleaccueil.css">
 </head>
 <body>
-<nav class="navbar">
-	<div class="nav-left">
-		<a href="/" class="nav-link">Accueil</a>
-		<a href=# class="nav-link">WishList</a>
-		<a href=# class="nav-link">Mes offres</a>
-	</div>
-	<div class="nav-logo">
-		<img style="max-width: 100px;" src="http://stage.up/static/logo_stageup.jpg" alt="Stage Up">
-	</div>
-	<div class="nav-right">
-		<a href="?uri=profil" class="nav-button">Mon compte</a>
-	</div>
-</nav>
+
+<div data-include="http://stage.up/templates/navbar.html"></div>
+
 <h1>Bienvenue sur notre site ! </h1>
 <h2>Nous espérons que vous trouverez ce que vous cherchez !</h2>
 <div class="zone">
@@ -50,16 +41,8 @@
 		</div>
 	</a>
 </div>
-<footer class="footer">
-	<div class="footer-content">
-		<div class="footer-logo">
-			<h2>Web4All</h2>
-		</div>
-		<div class="footer-copyright">
-			<p>&copy; 2025 Web4All. Tous droits réservés.</p>
-		</div>
-	</div>
-</footer>
-<script src=# ></script>
+
+<div data-include="http://stage.up/templates/footer.html"></div>
+
 </body>
 </html>

@@ -24,6 +24,7 @@
 </nav>
 
 <div class="profile-container">
+    <img class="user_logo" src="http://stage.up/static/logo_user.png">
     <h2>Bienvenue {{ user.firstname_user }} {{ user.lastname_user }}</h2>
     <div class="info">
     <h3>Email :</h3>
@@ -32,8 +33,12 @@
     <div class="info">
         <h3>Rôle :</h3>
         <p>{{ user.name_rank }}</p>
+        <br>
+        <br>
     </div>
-    <a href="/?uri=logout">Déconnexion</a>
+    <a class ="low-button1" href="?uri=etudiants">Mes Étudiants</a>
+    <a class ="low-button1" href="?uri=pilotes">Mes Pilotes</a>  
+    <a class ="low-button3" href="/?uri=logout">Déconnexion</a>
 </div>
 
 <footer class="footer">
