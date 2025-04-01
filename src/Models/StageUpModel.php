@@ -250,6 +250,28 @@ class StageUpModel extends Model {
         }
     }
 
+    public function post_form_postuler($id_utilisateur,$id_offre,$motivation,$cv) {
+        try {
+            $extension = pathinfo($cv['name'], PATHINFO_EXTENSION);
+            $nom_fichier = "etudiant_".$id_utilisateur."_offre_".$id_offre.".".$extension;
+
+            $requete = "INSERT INTO application (id_user, id_offers, date_application, motiv_application, cv_application)
+                        VALUES (:id_utilisateur, :id_offre, DATE(NOW()), :motivation, 
+                        :nom_fichier);";
+    
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_utilisateur' => $id_utilisateur,
+                ':id_offre' => $id_offre,
+                ':motivation' => $motivation,
+                ':nom_fichier' => $nom_fichier,
+            ]);
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la candidature : " . $message_erreur->getMessage());
+        }
+    }
+    
+
 
 
 
