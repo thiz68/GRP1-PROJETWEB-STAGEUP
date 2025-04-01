@@ -45,13 +45,18 @@
 .nav-logo {
     text-align: center;
     flex: 1;
-    max-width: 100px;
+
 }
 
 .nav-logo h1 {
     color: var(--primary-color);
     font-weight: bold;
     font-size: 1.8rem;
+
+}
+
+.head-logo {
+    width: 100px;
     max-width: 100px;
 }
 
