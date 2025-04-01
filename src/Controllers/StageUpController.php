@@ -118,7 +118,6 @@ class StageUpController extends Controller {
         header("Location: ?uri=offres");
     }
 
-    
 
     public function page_modif_entreprise() {
         $this->render('modif_entreprise.html', ['id_entreprise' => $_GET['id_entreprise']]);
@@ -137,6 +136,20 @@ class StageUpController extends Controller {
     public function modif_offre() {
         
     }
+
+    public function page_postuler() {
+        $this->render('postuler.html', ['id_offre' => $_GET['id_offre']]);
+    }
+
+    public function postuler() {
+        $id_utilisateur = SessionManager::getCurrentUserId();
+        $this->model->post_form_postuler($id_utilisateur,$_POST['id_offre'],$_POST['motivation'],
+        $_FILES['cv']);
+        header("Location: /");
+    }
+
+
+
 
 
 
