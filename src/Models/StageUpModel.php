@@ -101,7 +101,7 @@ class StageUpModel extends Model {
     public function post_form_creer_pilote($nom, $prenom, $email, $mdp) {
         try {
             $requete = "INSERT INTO _user (firstname_user, lastname_user, email_user, password_user, id_rank)
-                    VALUES (:nom, :prenom, :email, :mdp, 2)";
+                    VALUES (:nom, :prenom, :email, :mdp, 2);";
     
             $requete_prep = $this->pdo->prepare($requete);
             $requete_prep->execute([
@@ -118,7 +118,7 @@ class StageUpModel extends Model {
     public function post_form_creer_etudiant($nom, $prenom, $email, $mdp) {
         try {
             $requete = "INSERT INTO _user (firstname_user, lastname_user, email_user, password_user, id_rank)
-                    VALUES (:nom, :prenom, :email, :mdp, 3)";
+                    VALUES (:nom, :prenom, :email, :mdp, 3);";
     
             $requete_prep = $this->pdo->prepare($requete);
             $requete_prep->execute([
@@ -135,7 +135,7 @@ class StageUpModel extends Model {
     public function post_form_creer_entreprise($nom, $description, $email, $tel) {
         try {
             $requete = "INSERT INTO enterprises (name_enterprise, description_enterprise, email_enterprise, tel_enterprise)
-                    VALUES (:nom, :description, :email, :tel)";
+                    VALUES (:nom, :description, :email, :tel);";
     
             $requete_prep = $this->pdo->prepare($requete);
             $requete_prep->execute([
@@ -145,9 +145,111 @@ class StageUpModel extends Model {
                 ':tel' => $tel,
             ]);
         } catch (PDOException $message_erreur) {
-            die("Erreur lors de l'insertion des donnees du compte: " . $message_erreur->getMessage());
+            die("Erreur lors de l'insertion des donnees dde l'entreprise: " . $message_erreur->getMessage());
         }
     }
+
+    public function post_form_creer_offre($id_entreprise, $titre, $description, $salaire, $date_debut, $date_fin) {
+        try {
+            $requete = "INSERT INTO offers (id_enterprise, title_offer, desc_offer, remun_offer, s_date_offer, e_date_offer)
+                    VALUES (:id_entreprise, :titre, :description, :salaire, :date_debut, :date_fin);";
+    
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_entreprise' => $id_entreprise,
+                ':titre' => $titre,
+                ':description' => $description,
+                ':salaire' => $salaire,
+                ':date_debut' => $date_debut,
+                ':date_fin' => $date_fin
+            ]);
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de l'insertion des donnees de l'offre: " . $message_erreur->getMessage());
+        }
+    }
+
+
+
+    public function get_liste_etudiants() {
+        try {
+            $requete = "SELECT * from _user inner join ranks 
+            on _user.id_rank = ranks.id_rank 
+            where ranks.name_rank = 'etudiant';";
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute();
+            return $requete_prep->fetchAll();
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la récupération des étudiants : " . $message_erreur->getMessage());
+        }
+    }
+
+    public function get_liste_pilotes() {
+        try {
+            $requete = "SELECT * from _user inner join ranks 
+            on _user.id_rank = ranks.id_rank 
+            where ranks.name_rank = 'pilote';";
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute();
+            return $requete_prep->fetchAll();
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la récupération des pilotes : " . $message_erreur->getMessage());
+        }
+    }
+
+
+
+    public function post_form_modif_etudiant($id_user,$nom, $prenom, $email) {
+        try {
+            $requete = "UPDATE _user SET firstname_user = :prenom, lastname_user = :nom, email_user = :email
+            WHERE id_user = :id_user;";
+    
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_user' => $id_user,
+                ':nom' => $nom,
+                ':prenom' => $prenom,
+                ':email' => $email,
+            ]);
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la modification des donnees du compte: " . $message_erreur->getMessage());
+        }
+    }
+
+    public function post_form_modif_pilote($id_user,$nom, $prenom, $email) {
+        try {
+            $requete = "UPDATE _user SET firstname_user = :prenom, lastname_user = :nom, email_user = :email
+            WHERE id_user = :id_user;";
+    
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_user' => $id_user,
+                ':nom' => $nom,
+                ':prenom' => $prenom,
+                ':email' => $email,
+            ]);
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la modification des donnees du compte: " . $message_erreur->getMessage());
+        }
+    }
+
+    public function post_form_modif_entreprise($id_entreprise, $nom, $description, $email, $tel) {
+        try {
+            $requete = "UPDATE enterprises SET name_enterprise = :nom, description_enterprise = :description, 
+                        email_enterprise = :email, tel_enterprise = :tel WHERE id_enterprise = :id_entreprise;";
+    
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_entreprise' => $id_entreprise,
+                ':nom' => $nom,
+                ':description' => $description,
+                ':email' => $email,
+                ':tel' => $tel,
+            ]);
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de l'insertion des donnees de l'entreprise: " . $message_erreur->getMessage());
+        }
+    }
+
 
 
 
