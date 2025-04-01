@@ -4,7 +4,6 @@
 	<meta charset="utf-8">
 	<meta name="author" content="Clery G">
 	<link rel="stylesheet" href="http://stage.up/static/style_entreprises.css">
-  <script src="http://stage.up/static/include.js" defer></script>
 	<title>Stage Up</title> 
 </head> 
 
@@ -15,8 +14,20 @@
 		
 		
 
-        <!-- Navbar -->
-        <div data-include="http://stage.up/static/navbar.html"></div>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-left">
+      <a href="/" class="nav-link">Accueil</a>
+      <a href="wishlist.html" class="nav-link">Wishlist</a>
+      <a href="mesoffres.html" class="nav-link">Mes Offres</a>
+    </div>
+    <div class="nav-logo">
+        <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+    </div>
+    <div class="nav-right">
+      <a href="?uri=profil" class="nav-button">Mon compte</a>
+    </div>
+  </nav>
 
 
 	</header>
@@ -92,8 +103,17 @@
 
 
 <!-- Footer -->
-<div data-include="http://stage.up/static/footer.html"></div>
-    
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
+    </div>
+    <div class="footer-copyright">
+      <p>&copy; 2025 Stage Up. Tous droits réservés.</p>
+      <a href="mentionslegales.html" class="nav-link">Mentions Légales</a>
+    </div>
+  </div>
+</footer>
 
 </body> 
 </html> 

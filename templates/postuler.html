@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html> 
+<head> 
+	<meta charset="utf-8">
+	<meta name="author" content="Clery G">
+    <script src="http://stage.up/static/include.js" defer></script>
+	<link rel="stylesheet" href="postuler.css">
+	<title>Postuler</title> 
+</head> 
+
+<div data-include="http://stage.up/static/navbar.html"></div>
+
+    <div class="container">
+        <form class="modification-form" action="index.php" method="post">
+            <input type="hidden" name="uri" value="postuler">
+            <input type="hidden" name="id_offre" value="{{id_offre}}">
+            <h1>Postuler à une offre</h1>
+
+            <div class="form-group">
+                <label for="motivation">Motivation</label>
+                <textarea id="motivation" name="motivation" rows="4" placeholder="Entrez vos motivations"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="cv">Téléverser votre CV(PDF, DOCX, ODT, JPG, PNG - max 8Mo)</label>             
+                <input type="file" id="cv" name="cv" >
+                <div id="fileError" class="error"></div>
+            </div>
+
+            <div class="button-group">
+                <a class ="btn btn-secondary" href="http://stage.up/template/supprconfirmcompte.html" class="nav-link">Supprimer le compte</a>
+                <button type="submit" class="btn btn-primary">Postuler</button>
+            </div>
+
+            <div id="formError" class="error"></div>
+        </form>
+    </div>
+
+<script>
+           // Validation du fichier CV
+           document.getElementById('cv').addEventListener('change', function() {
+                const file = this.files[0];
+                // Types de fichiers autorisés
+                const allowedTypes = [
+                    'application/pdf', 
+                    'application/msword', 
+                    'application/vnd.oasis.opendocument.text',
+                    'image/jpeg',
+                    'image/png'
+                ];
+                const maxSize = 8 * 1024 * 1024; // Taille maximale de 8Mo en octets
+                const errorDiv = document.getElementById('fileError');
+
+                if (file) {
+                    // Vérification du type de fichier
+                    if (!allowedTypes.includes(file.type)) {
+                        errorDiv.textContent = "Format de fichier non autorisé";
+                        errorDiv.style.display = "block";
+                        this.value = ''; // Réinitialisation du champ
+                        return false;
+                    }
+
+                    // Vérification de la taille du fichier
+                    if (file.size > maxSize) {
+                        errorDiv.textContent = "Le fichier dépasse la taille maximale autorisée (2Mo)";
+                        errorDiv.style.display = "block";
+                        this.value = '';
+                        return false;
+                    }
+
+                    // Suppression des erreurs si tout est correct
+                    errorDiv.style.display = "none";
+                }
+            });
+
+</script>
+
+<div data-include="http://stage.up/static/footer.html"></div>
+
+</body>
+</html>
