@@ -62,34 +62,5 @@ p {
     color: white; 
 } 
 
-footer {
-    background-color: white;
-    padding: 15px 0;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-    width: 100%;
-}
 
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-}
 
-.footer-logo {
-    color: #AB1BEE;
-    font-weight: bold;
-}
-
-.footer-copyright {
-    color: #757575;
-    font-size: 0.9rem;
-}
-
-.nav-link {
-    color: #AB1BEE;
-    text-decoration: none;
-    margin-left: 10px;
-}

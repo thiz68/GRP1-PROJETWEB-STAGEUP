@@ -7,21 +7,11 @@
     <meta http-equiv="x-ua-compatible" content="DENY">
     <title>Page d'accueil</title>
     <link rel="stylesheet" href="http://stage.up/static/profil.css">
+    <script src="http://stage.up/static/include.js" defer></script>
 </head>
 <body>
-<nav class="navbar">
-    <div class="nav-left">
-        <a href='/' class="nav-link">Accueil</a>
-        <a href=# class="nav-link">WishList</a>
-        <a href=# class="nav-link">Mes offres</a>
-    </div>
-    <div class="nav-logo">
-        <a href=# class="nav-link"><h1>Stage Up</h1></a>
-    </div>
-    <div class="nav-right">
-        <a href="?uri=profil" class="nav-button">Mon compte</a>
-    </div>
-</nav>
+
+<div data-include="http://stage.up/static/navbar.html"></div>
 
 <div class="profile-container">
     <img class="user_logo" src="http://stage.up/static/logo_user.png">
@@ -41,17 +31,7 @@
     <a class ="low-button3" href="/?uri=logout">Déconnexion</a>
 </div>
 
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-logo">
-            <h2>Stage Up</h2>
-        </div>
-        <div class="footer-copyright">
-            <p>&copy; 2025 Stage Up. Tous droits réservés.</p>
-            <a href=# class="footer-link">Mentions légales</a>
-        </div>
-    </div>
-</footer>
+<div data-include="http://stage.up/static/footer.html"></div>
 
 </body>
 </html>
