@@ -101,6 +101,12 @@ switch ($uri) {
     case 'modif_offre':
         $controller->modif_offre();
         break;
+    case 'page_postuler':
+        $controller->page_postuler();
+        break;
+    case 'postuler':
+        $controller->postuler();
+        break;
 
 
     case 'connexion':
