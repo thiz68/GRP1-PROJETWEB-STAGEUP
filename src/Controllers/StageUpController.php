@@ -21,6 +21,10 @@ class StageUpController extends Controller {
         // Met à jour l'horodatage de dernière activité
         SessionManager::updateLastActivity();
     }
+
+
+
+
     public function page_accueil() {
         $this->render('accueil.html');
     }
@@ -62,7 +66,7 @@ class StageUpController extends Controller {
 
     public function creer_compte_pilote() {
         $this->model->post_form_creer_pilote($_POST['nom'],$_POST['prenom'],$_POST['email'],password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT));
-        $this->page_accueil();
+        header("Location: ?uri=pilotes");
     }
 
     public function page_creer_compte_etudiant() {
@@ -71,7 +75,27 @@ class StageUpController extends Controller {
 
     public function creer_compte_etudiant() {
         $this->model->post_form_creer_etudiant($_POST['nom'],$_POST['prenom'],$_POST['email'],password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT));
-        $this->page_accueil();
+        header("Location: ?uri=etudiants");
+    }
+
+    public function page_modif_compte_etudiant() {
+        $id_etudiant = $_GET['id_etudiant'];
+        $this->render('modif_compte_etudiant.html', ['id_etudiant' => $id_etudiant]);
+    }
+
+    public function modif_compte_etudiant() {
+        $this->model->post_form_modif_etudiant((int)$_POST['id_etudiant'],$_POST['nom'],$_POST['prenom'],$_POST['email']);
+        header("Location: ?uri=etudiants");
+    }
+
+    public function page_modif_compte_pilote() {
+        $id_pilote = $_GET['id_pilote'];
+        $this->render('modif_compte_pilote.html', ['id_pilote' => $id_pilote]);
+    }
+
+    public function modif_compte_pilote() {
+        $this->model->post_form_modif_pilote((int)$_POST['id_pilote'],$_POST['nom'],$_POST['prenom'],$_POST['email']);
+        header("Location: ?uri=pilotes");
     }
 
     public function page_creer_entreprise() {
@@ -80,16 +104,58 @@ class StageUpController extends Controller {
 
     public function creer_entreprise() {
         $this->model->post_form_creer_entreprise($_POST['nom'],$_POST['description'],$_POST['email'],$_POST['tel']);
-        $this->page_accueil();
+        header("Location: ?uri=entreprises");
     }
 
-    public function mon_compte() {
-        $this->render('mon_compte.html');
+    public function page_creer_offre() {
+        $this->render('creer_offre.html', ['id_entreprise' => $_GET['id_entreprise']]);
     }
 
-    public function modif_compte_etudiant() {
-
+    public function creer_offre() {
+        $this->model->post_form_creer_offre($_POST['id_entreprise'],$_POST['titre'],
+                                            $_POST['description'],$_POST['salaire'],
+                                            $_POST['date_debut'],$_POST['date_fin']);
+        header("Location: ?uri=offres");
     }
+
+    
+
+    public function page_modif_entreprise() {
+        $this->render('modif_entreprise.html', ['id_entreprise' => $_GET['id_entreprise']]);
+    }
+
+    public function modif_entreprise() {
+        $this->model->post_form_modif_entreprise($_POST['id_entreprise'],$_POST['nom'],
+        $_POST['description'],$_POST['email'],$_POST['tel']);
+        header("Location: ?uri=entreprises");
+    }
+
+    public function page_modif_offre() {
+        
+    }
+
+    public function modif_offre() {
+        
+    }
+
+
+
+    public function liste_etudiants() {
+        if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
+        $etudiants = $this->model->get_liste_etudiants();
+        $this->render('etudiants.html', ['etudiants' => $etudiants, 'page' => $page]);
+    }
+
+    public function liste_pilotes() {
+        if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
+        $pilotes = $this->model->get_liste_pilotes();
+        $this->render('pilotes.html', ['pilotes' => $pilotes, 'page' => $page]);
+    }
+
+
+
+
+
 
 
 
