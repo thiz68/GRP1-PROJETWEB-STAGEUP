@@ -8,22 +8,11 @@
     <title>Stage Up - Entreprises</title>
     <link rel="stylesheet" href="http://stage.up/static/style_entreprises.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script src="http://stage.up/static/include.js" defer></script>
 </head>
 <body>
 <!-- Navbar -->
-<nav class="navbar">
-    <div class="nav-left">
-        <a href="/?uri=/" class="nav-link">Accueil</a>
-        <a href="/?uri=wishlist" class="nav-link">Wishlist</a>
-        <a href="/?uri=offres" class="nav-link">Mes Offres</a>
-    </div>
-    <div class="nav-logo">
-        <h1>Stage Up</h1>
-    </div>
-    <div class="nav-right">
-        <a href="/?uri=profil" class="nav-button">Mon compte</a>
-    </div>
-</nav>
+<div data-include="http://stage.up/static/navbar.html"></div>
 
 <!-- Search Section -->
 <section class="search-section">
@@ -118,17 +107,7 @@
 </section>
 
 <!-- Footer -->
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-logo">
-            <h2>Stage Up</h2>
-        </div>
-        <div class="footer-copyright">
-            <p>&copy; 2025 Stage Up. Tous droits réservés.</p>
-            <a href="/?uri=mentionslegales" class="nav-link">Mentions Légales</a>
-        </div>
-    </div>
-</footer>
+<div data-include="http://stage.up/static/footer.html"></div>
 
 <script>
     const slider = document.getElementById('note_min');
