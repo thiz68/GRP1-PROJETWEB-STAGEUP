@@ -27,80 +27,6 @@ body {
     line-height: 1.6;
 }
 
-/* Navbar Styles */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: var(--white);
-    box-shadow: var(--box-shadow);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.nav-left, .nav-right {
-    display: flex;
-    align-items: center;
-    flex: 1;
-}
-
-.nav-right {
-    justify-content: flex-end;
-}
-
-.nav-logo {
-    text-align: center;
-    flex: 1;
-}
-
-.nav-logo h1 {
-    color: var(--primary-color);
-    font-weight: bold;
-    font-size: 1.8rem;
-}
-
-.nav-link {
-    margin-right: 1.5rem;
-    text-decoration: none;
-    color: var(--text-color);
-    position: relative;
-    padding-bottom: 5px;
-    transition: color var(--transition-default);
-}
-
-.nav-link:hover {
-    color: var(--primary-color);
-}
-
-.nav-link.active {
-    color: var(--primary-color);
-    font-weight: bold;
-}
-
-.nav-link.active::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    background-color: var(--primary-color);
-    bottom: 0;
-    left: 0;
-}
-
-.nav-button {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    transition: background-color var(--transition-default);
-}
-
-.nav-button:hover {
-    background-color: var(--primary-dark);
-}
 
 /* Search Section Styles */
 .search-section {
@@ -344,37 +270,6 @@ body {
 
 .page-ellipsis {
     margin: 0 0.5rem;
-}
-
-/* Footer Styles */
-.footer {
-    background-color: var(--white);
-    padding: 2rem;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-    margin-top: 2rem;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.footer-logo h2 {
-    color: var(--primary-color);
-    font-size: 1.5rem;
-}
-
-.footer-copyright {
-    color: var(--dark-gray);
-    font-size: 0.9rem;
-}
-
-.footer-copyright .nav-link {
-    margin-top: 0.5rem;
-    display: inline-block;
 }
 
 /* Responsive Adjustments */
