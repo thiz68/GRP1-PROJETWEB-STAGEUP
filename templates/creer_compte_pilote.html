@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="author" content="Clery G">
     <link rel="stylesheet" href="http://stage.up/static/creer_compte_pilote.css">
+	w    <script src="http://stage.up/static/include.js" defer></script>
 	<title>Création d'un compte pilote</title> 
 </head> 
 
@@ -12,19 +13,7 @@
 
 	<header>
         <!-- Navbar -->
-        <nav class="navbar">
-            <div class="nav-left">
-            <a href="/" class="nav-link">Accueil</a>
-            <a href="wishlist.html" class="nav-link">Wishlist</a>
-            <a href="mesoffres.html" class="nav-link">Mes Offres</a>
-            </div>
-            <div class="nav-logo">
-                <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
-            </div>
-            <div class="nav-right">
-            <a href="profil.html" class="nav-button">Mon compte</a>
-            </div>
-        </nav>
+       <div data-include="http://stage.up/static/navbar.html"></div>
     </header>
 
 
@@ -60,17 +49,7 @@
     </div>
 
 <!-- Footer -->
-<footer class="footer">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
-      </div>
-      <div class="footer-copyright">
-        <p>&copy; 2025 Web4All. Tous droits réservés.</p>
-        <a href="mentionslegales.html" class="nav-link">Mentions Légales</a>
-      </div>
-    </div>
-  </footer>
+<div data-include="http://stage.up/static/footer.html"></div>
     
 <script>
             // Fonction de validation d'email
