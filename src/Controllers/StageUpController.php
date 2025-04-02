@@ -30,18 +30,75 @@ class StageUpController extends Controller {
     }
 
     public function liste_entreprises() {
-        if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
-        if (isset($_GET['note_min'])) : $note_min = $_GET['note_min']; else : $note_min=0; endif;
-        $entreprises = $this->model->getEntreprises($note_min);
-        $this->render('entreprises.html', ['entreprises' => $entreprises, 'page' => $page, 'note_min' => $note_min]);
+        $this->requireAuthentication();
+
+        // Récupération des paramètres
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $note_min = isset($_GET['note_min']) ? (float)$_GET['note_min'] : 0.0;
+        $keywords = $_GET['keywords'] ?? '';
+
+        // Récupération des entreprises filtrées
+        $entreprises = $this->model->searchEntreprises($keywords, $note_min);
+
+        // Calcul du nombre total de pages
+        $itemsPerPage = 10;
+        $totalItems = count($entreprises);
+        $totalPages = ceil($totalItems / $itemsPerPage);
+
+        // Validation de la page courante
+        if ($page < 1) {
+            $page = 1;
+        }
+        if ($page > $totalPages && $totalPages > 0) {
+            $page = $totalPages;
+        }
+
+        $this->render('entreprises.html', [
+            'entreprises' => $entreprises,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'note_min' => $note_min,
+            'keywords' => $keywords
+        ]);
     }
 
     public function liste_offres() {
         if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
         if (isset($_GET['id_entreprise'])) : $id_entreprise = $_GET['id_entreprise']; else : $id_entreprise=0; endif;
         if (isset($_GET['salaire_min'])) : $salaire_min = $_GET['salaire_min']; else : $salaire_min=0; endif;
-        $offres = $this->model->getOffres($id_entreprise, $salaire_min);
-        $this->render('offres.html', ['offres' => $offres, 'page' => $page, 'id_entreprise' => $id_entreprise, 'salaire_min' => $salaire_min]);
+        $keywords = $_GET['keywords'] ?? '';
+
+        if (!empty($keywords)) {
+            $offres = $this->model->searchOffres($id_entreprise, $salaire_min, $keywords);
+        } else {
+            $offres = $this->model->getOffres($id_entreprise, $salaire_min);
+        }
+
+        // Pour chaque offre, récupérer le nom de l'entreprise
+        foreach ($offres as $key => $offer) {
+            $entreprise = $this->model->getEntreprise($offer['id_enterprise']);
+            $offres[$key]['name_enterprise'] = $entreprise[0]['name_enterprise'];
+        }
+
+        $itemsPerPage = 10;
+        $totalItems = count($offres);
+        $totalPages = ceil($totalItems / $itemsPerPage);
+
+        if ($page < 1) {
+            $page = 1;
+        }
+        if ($page > $totalPages && $totalPages > 0) {
+            $page = $totalPages;
+        }
+
+        $this->render('offres.html', [
+            'offres' => $offres,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'id_entreprise' => $id_entreprise,
+            'salaire_min' => $salaire_min,
+            'keywords' => $keywords
+        ]);
     }
 
     public function page_entreprise() {
@@ -150,9 +207,6 @@ class StageUpController extends Controller {
 
 
 
-
-
-
     public function liste_etudiants() {
         if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
         $etudiants = $this->model->get_liste_etudiants();
@@ -164,10 +218,6 @@ class StageUpController extends Controller {
         $pilotes = $this->model->get_liste_pilotes();
         $this->render('pilotes.html', ['pilotes' => $pilotes, 'page' => $page]);
     }
-
-
-
-
 
 
 
@@ -223,6 +273,86 @@ class StageUpController extends Controller {
         $userId = SessionManager::getCurrentUserId();
         $user = $this->model->getUserWithRole($userId);
         $this->render('profil.html', ['user' => $user]);
+    }
+
+    public function page_non_trouvee() {
+        $this->render('404.html');
+    }
+
+    public function mentionslegales() {
+        $this->render('mentionslegales.html');
+    }
+
+
+    public function wishlist() {
+        $this->requireAuthentication();
+
+        $userId = SessionManager::getCurrentUserId();
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $keywords = $_GET['keywords'] ?? '';
+        $location = $_GET['location'] ?? '';
+
+        if (!empty($keywords) || !empty($location)) {
+            $offers = $this->model->searchWishlist($userId, $keywords, $location);
+        } else {
+            $offers = $this->model->getUserWishlist($userId);
+        }
+
+        $offers = is_array($offers) ? $offers : [];
+
+        $itemsPerPage = 10;
+        $totalItems = count($offers);
+        $totalPages = ceil($totalItems / $itemsPerPage);
+
+        if ($page < 1) {
+            $page = 1;
+        }
+        if ($page > $totalPages && $totalPages > 0) {
+            $page = $totalPages;
+        }
+
+        $paginatedOffers = array_slice($offers, ($page - 1) * $itemsPerPage, $itemsPerPage);
+
+        $this->render('wishlist.html', [
+            'offers' => $paginatedOffers,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'keywords' => $keywords,
+            'location' => $location
+        ]);
+    }
+
+    public function addToWishlist() {
+        $this->requireAuthentication();
+
+        if (!isset($_GET['id_offers'])) {
+            header('Location: /?uri=offres');
+            exit;
+        }
+
+        $userId = SessionManager::getCurrentUserId();
+        $offerId = (int)$_GET['id_offers'];
+        $this->model->addToWishlist($userId, $offerId);
+
+        $referer = $_SERVER['HTTP_REFERER'] ?? '/?uri=offres';
+        header('Location: ' . $referer);
+        exit;
+    }
+
+    public function removeFromWishlist() {
+        $this->requireAuthentication();
+
+        if (!isset($_GET['id_offers'])) {
+            header('Location: /?uri=wishlist');
+            exit;
+        }
+
+        $userId = SessionManager::getCurrentUserId();
+        $offerId = (int)$_GET['id_offers'];
+        $this->model->removeFromWishlist($userId, $offerId);
+
+        header('Location: /?uri=wishlist');
+        exit;
     }
 
 
