@@ -1,112 +1,115 @@
-<html> 
-
-<head> 
-	<meta charset="utf-8">
-	<meta name="author" content="Clery G">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="content-type" content="nosniff">
+	<meta http-equiv="x-ua-compatible" content="DENY">
+	<title>Web4All - Offres</title>
 	<link rel="stylesheet" href="http://stage.up/static/style_offres.css">
-	<title>Stage Up</title> 
-</head> 
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<script src="http://stage.up/static/include.js" defer></script>
+</head>
 <body>
-
-<header>
-
 <!-- Navbar -->
-<nav class="navbar">
-    <div class="nav-left">
-      <a href="/" class="nav-link">Accueil</a>
-      <a href="wishlist.html" class="nav-link">Wishlist</a>
-      <a href="mesoffres.html" class="nav-link">Mes Offres</a>
-    </div>
-    <div class="nav-logo">
-        <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
-    </div>
-    <div class="nav-right">
-      <a href="?uri=profil" class="nav-button">Mon compte</a>
-    </div>
-  </nav>
+<div data-include="http://stage.up/static/navbar.html"></div>
 
-</header>
-
-
-	<section class="principal">
- 
-		<p class="titre">Liste des offres</p>
-		<p class="texte">Affichage de la liste des offres (5 par page)</p>
-		<form id="slider-container" action="" method="get">
+<!-- Search Section -->
+<section class="search-section">
+	<div class="search-container">
+		<form action="/?uri=offres" method="GET" class="search-group">
 			<input type="hidden" name="uri" value="offres">
-			<input type="hidden" name="page" value="1">
-			<input type="hidden" name="id_entreprise" value="{{ id_entreprise }}">
-			<div style="margin-left: 15px; display: flex; align-items: center; gap: 10px;">
-				<label for="salaire_min">Salaire minimum :</label>
-				<input type="range" id="salaire_min" name="salaire_min" min="0" max="3000" step="100" value="{{ salaire_min }}">
-				<span id="sliderValue">0 €</span>
-				<button type="submit" class="btn-purple">Filtrer</button>
+			<div class="search-box">
+				<label for="searchGeneral" class="sr-only">Recherche par mots-clés</label>
+				<input type="text" id="searchGeneral" name="keywords" placeholder="Rechercher par titre de poste ou par mot-clé" maxlength="100" value="{{ keywords }}">
+				<button type="submit" id="searchButton" class="search-icon" aria-label="Rechercher"><i class="fas fa-search"></i></button>
 			</div>
 		</form>
 
-		<script>
-			const slider = document.getElementById('salaire_min');
-			const valueDisplay = document.getElementById('sliderValue');
-			
-			valueDisplay.textContent = slider.value + ' €';
-			
-			slider.addEventListener('input', () => {
-				valueDisplay.textContent = slider.value + ' €';
-			});
-		</script>
+		<form id="slider-container" action="/?uri=offres" method="GET" style="margin-top: 15px;">
+			<input type="hidden" name="uri" value="offres">
+			<input type="hidden" name="page" value="1">
+			<input type="hidden" name="id_entreprise" value="{{ id_entreprise }}">
+			{% if keywords %}<input type="hidden" name="keywords" value="{{ keywords }}">{% endif %}
+			<div style="display: flex; align-items: center; gap: 10px;">
+				<label for="salaire_min">Salaire minimum :</label>
+				<input type="range" id="salaire_min" name="salaire_min" min="0" max="3000" step="100" value="{{ salaire_min }}">
+				<span id="sliderValue">{{ salaire_min }} €</span>
+				<button type="submit" class="nav-button">Filtrer</button>
+			</div>
+		</form>
+	</div>
+</section>
 
-		<article>
+<!-- Job Listings -->
+<section class="job-listings">
+	{% if offres|length > 0 %}
+	{% for offer in offres|slice((page-1)*10, 10) %}
+	<div class="job-card">
+		<div class="job-info">
+			<h3 class="job-title">{{ offer.title_offer }}</h3>
+			<div class="company-info">
+				<a href="/?uri=page_entreprise&id_entreprise={{ offer.id_enterprise }}" style="color: inherit; text-decoration: none;">
+					<span class="company-name">{{ offer.name_enterprise }}</span>
+				</a>
+			</div>
+			<p class="job-description">{{ offer.desc_offer|slice(0, 150) }}{% if offer.desc_offer|length > 150 %}...{% endif %}</p>
+			<div class="job-details">
+				<span class="salary"><i class="fas fa-money-bill-wave"></i> {{ offer.remun_offer }} €</span>
+				<span class="publication-date"><i class="far fa-calendar-alt"></i> Début: {{ offer.s_date_offer }}</span>
+				<span class="publication-date"><i class="far fa-calendar-alt"></i> Fin: {{ offer.e_date_offer }}</span>
+			</div>
+		</div>
+		<div class="job-actions">
+			<a href="/?uri=postuler&id_offre={{ offer.id_offers }}" class="view-details-btn">Postuler</a>
+			<a href="/?uri=addToWishlist&id_offers={{ offer.id_offers }}" class="view-details-btn"><i class="fas fa-heart"></i> Ajouter</a>
+		</div>
+	</div>
+	{% endfor %}
+	{% else %}
+	<div class="no-offers-message">
+		<h3>Aucune offre disponible</h3>
+		<p>Aucune offre ne correspond à vos critères de recherche.</p>
+	</div>
+	{% endif %}
 
-            <table class="liste_offres"> 
+	<!-- Pagination -->
+	{% if totalPages > 1 %}
+	<div class="pagination" aria-label="Pagination">
+		<a href="/?uri=offres&page={{ page > 1 ? page - 1 : 1 }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}{% if keywords %}&keywords={{ keywords }}{% endif %}" class="prev-page" aria-label="Page précédente" {{ page <= 1 ? 'aria-disabled="true"' : '' }}><i class="fas fa-chevron-left"></i></a>
 
-                <tr>
-                    <th style="width: 300px;">Titre</th>
-                    <th>Description</th>
-					<th style="width: 100px;">Rémunération</th>
-					<th style="width: 120px;">Date de début</th>
-					<th style="width: 120px;">Date de fin</th>
-					<th style="width: 120px;">Postuler</th>
-                </tr>
-				
-				{% for elem in offres|slice((page-1)*5, 5) %}
-					<tr>
-						<td>{{ elem.title_offer }}</td>
-						<td>{{ elem.desc_offer }}</td>
-						<td>{{ elem.remun_offer }}</td>
-						<td>{{ elem.s_date_offer }}</td>
-						<td>{{ elem.e_date_offer }}</td>
-						<td><a href="?uri=page_postuler&id_offre={{ elem.id_offers }}">Postuler</a></td>
-					</tr>
-				{% endfor %}
+		{% set startPage = max(1, page - 2) %}
+		{% set endPage = min(totalPages, startPage + 4) %}
+		{% if endPage - startPage < 4 %}
+		{% set startPage = max(1, endPage - 4) %}
+		{% endif %}
 
-            </table>
+		{% for i in startPage..endPage %}
+		<a href="/?uri=offres&page={{ i }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}{% if keywords %}&keywords={{ keywords }}{% endif %}" class="page-number {{ page == i ? 'active' : '' }}" {{ page == i ? 'aria-current="page"' : '' }}>{{ i }}</a>
+		{% endfor %}
 
-			{% if page > 1 %}{% set page_n = page - 1 %}{% else %}{% set page_n = 1 %}{% endif %}
-			<a href="?uri=offres&page={{ page_n }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}">
-				<button id="precedent">Page précédente</button></a>
-			
-			{% if page*5 <= offres|length %}{% set page_n = page + 1 %}{% else %}{% set page_n = page %}{% endif %}
-            <a href="?uri=offres&page={{ page_n }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}">
-                <button id="suivant">Page suivante</button></a>
-        
-		</article>
+		{% if endPage < totalPages %}
+		<span class="page-ellipsis">...</span>
+		<a href="/?uri=offres&page={{ totalPages }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}{% if keywords %}&keywords={{ keywords }}{% endif %}" class="page-number">{{ totalPages }}</a>
+		{% endif %}
 
-	</section>
-
+		<a href="/?uri=offres&page={{ page < totalPages ? page + 1 : totalPages }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}{% if keywords %}&keywords={{ keywords }}{% endif %}" class="next-page" aria-label="Page suivante" {{ page >= totalPages ? 'aria-disabled="true"' : '' }}><i class="fas fa-chevron-right"></i></a>
+	</div>
+	{% endif %}
+</section>
 
 <!-- Footer -->
-<footer class="footer">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <img id="head_logo" src="http://stage.up/static/logo_stageup.jpg" alt="Logo Stage Up">
-      </div>
-      <div class="footer-copyright">
-        <p>&copy; 2025 Stage Up. Tous droits réservés.</p>
-        <a href="mentionslegales.html" class="nav-link">Mentions Légales</a>
-      </div>
-    </div>
-  </footer>
- 
-</body> 
-</html> 
+<div data-include="http://stage.up/static/footer.html"></div>
+
+<script>
+	const slider = document.getElementById('salaire_min');
+	const valueDisplay = document.getElementById('sliderValue');
+
+	valueDisplay.textContent = slider.value + ' €';
+
+	slider.addEventListener('input', () => {
+		valueDisplay.textContent = slider.value + ' €';
+	});
+</script>
+</body>
+</html>

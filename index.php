@@ -125,12 +125,28 @@ switch ($uri) {
     case 'profil':
         $controller->afficher_profil();
         break;
+        
+    case 'wishlist':
+        $controller->wishlist();
+        break;
+    case 'addToWishlist':
+        $controller->addToWishlist();
+        break;
+    case 'removeFromWishlist':
+        $controller->removeFromWishlist();
+        break;
+
+
     case 'logout':
         $controller->logout();
         break;
-    
+
+    case 'mentionslegales':
+        $controller->mentionslegales();
+        break;
+
     default:
-        echo '404 Not Found';
+        $controller->page_non_trouvee();
         break;
 }
 ?>
