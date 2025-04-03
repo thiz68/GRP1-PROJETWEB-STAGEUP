@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Clery G">
+    <link rel="stylesheet" href="http://stage.up/static/creer_offre.css">
+    <script src="http://stage.up/static/include.js" defer></script>
+    <title>Modification d'une offre</title>
+</head>
+
+<body>
+<header>
+    <!-- Navbar -->
+    <div data-include="http://stage.up/static/navbar.html"></div>
+</header>
+
+<div class="container">
+    <form class="modification-form" action="index.php" method="post">
+        <input type="hidden" name="uri" value="modif_offre">
+        <input type="hidden" name="id_offre" value="{{ offre.id_offers }}">
+        <h1>Modification d'une offre</h1>
+
+        <div class="form-group">
+            <label for="titre">Titre</label>
+            <input type="text" id="titre" name="titre" value="{{ offre.title_offer }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" required>{{ offre.desc_offer }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="salaire">Rémunération</label>
+            <input type="number" min="0" id="salaire" name="salaire" value="{{ offre.remun_offer }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="date_debut">Date de début</label>
+            <input type="date" id="date_debut" name="date_debut" value="{{ offre.s_date_offer }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="date_fin">Date de fin</label>
+            <input type="date" id="date_fin" name="date_fin" value="{{ offre.e_date_offer }}" required>
+        </div>
+
+        <!-- Section Compétences requises -->
+        <div class="form-group">
+            <label>Compétences requises</label>
+            <div class="skills-selector">
+                <div class="selected-skills" id="selected-skills">
+                    {% if offre.skills|length > 0 %}
+                    {% for skill in offre.skills %}
+                    <span class="skill-tag" data-id="{{ skill.id_skill }}">{{ skill.label_skill }}</span>
+                    {% endfor %}
+                    {% else %}
+                    <span class="placeholder">Choisissez des compétences requises</span>
+                    {% endif %}
+                </div>
+                <div class="skills-dropdown">
+                    {% for skill in skills %}
+                    <div class="skill-item {% if skill.id_skill in selectedSkillIds %}selected{% endif %}"
+                         data-id="{{skill.id_skill}}" data-name="{{skill.label_skill}}">
+                        {{skill.label_skill}}
+                        <input type="checkbox" id="skill_{{skill.id_skill}}"
+                               name="skills[]" value="{{skill.id_skill}}"
+                               {% if skill.id_skill in selectedSkillIds %}checked{% endif %}
+                               style="display: none;">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Modifier</button>
+        </div>
+    </form>
+</div>
+
+<!-- Footer -->
+<div data-include="http://stage.up/static/footer.html"></div>
+<script src="http://stage.up/static/creer_offre.js" defer></script>
+<script src="https://stage.up/static/validation.js" defer></script>
+<script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+        initFormValidation({
+            selector: ".modification-form",
+            fields: {
+                titre: document.getElementById("titre"),
+                description: document.getElementById("description"),
+                salaire: document.getElementById("salaire"),
+                date_debut: document.getElementById("date_debut"),
+                date_fin: document.getElementById("date_fin")
+            }
+        });
+    });
+</script>
+</body>
+</html>

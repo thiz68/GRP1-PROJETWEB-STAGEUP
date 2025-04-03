@@ -198,20 +198,30 @@ class StageUpController extends Controller {
     }
 
     public function page_modif_offre() {
-        $id_offre = $_GET['id_offre'];
+        $id_offre = $_GET['id_offre'] ?? 0;
 
-        // Récupérer les détails de l'offre
+        //Valid ID
+        if (empty($id_offre)) {
+            header('Location: /?uri=offres');
+            exit;
+        }
+        //Récupération de l'offre
         $offre = $this->model->getOffreById($id_offre);
 
-        // Récupérer toutes les compétences disponibles
-        $skills = $this->model->getSkills();
-
-        // Préparer un tableau des IDs de compétences requises pour cette offre
-        $selectedSkillIds = [];
-        foreach ($offre['skills'] as $skill) {
-            $selectedSkillIds[] = $skill['id_skill'];
+        //Vérif si offre existe
+        if (empty($offre)) {
+            header('Location: /?uri=offres');
+            exit;
         }
+        //Récup compétences
+        $skills = $this->model->getSkills();
+        $selectedSkillIds = [];
 
+        if (!empty($offre['skills'])) {
+            foreach ($offre['skills'] as $skill) {
+                $selectedSkillIds[] = $skill['id_skill'];
+            }
+        }
         $this->render('modif_offre.html', [
             'offre' => $offre,
             'skills' => $skills,
@@ -327,6 +337,53 @@ class StageUpController extends Controller {
         $this->render('mentionslegales.html');
     }
 
+    public function mes_candidatures() {
+
+        $this->requireAuthentication();
+
+        $userId = SessionManager::getCurrentUserId();
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $keywords = $_GET['keywords'] ?? '';
+
+
+        if (!empty($keywords) || !empty($location)) {
+            $offers = $this->model->search_candidatures($userId, $keywords, $location);
+        } else {
+            $offers = $this->model->getUser_candidatures($userId);
+        }
+
+        $offers = is_array($offers) ? $offers : [];
+
+        // Pour chaque offre, récupérer le nom de l'entreprise
+        foreach ($offers as $key => $offer) {
+            $entreprise = $this->model->getEntrepriseById($offer['id_enterprise']);
+            $offers[$key]['name_enterprise'] = $entreprise[0]['name_enterprise'];
+        }
+
+        $itemsPerPage = 10;
+        $totalItems = count($offers);
+        $totalPages = ceil($totalItems / $itemsPerPage);
+
+        if ($page < 1) {
+            $page = 1;
+        }
+        if ($page > $totalPages && $totalPages > 0) {
+            $page = $totalPages;
+        }
+
+        $paginatedOffers = array_slice($offers, ($page - 1) * $itemsPerPage, $itemsPerPage);
+
+        $this->render('mes_candidatures.html', [
+            'offers' => $paginatedOffers,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'keywords' => $keywords,
+        ]);
+
+
+    }
+
+
 
     public function wishlist() {
         $this->requireAuthentication();
@@ -334,7 +391,7 @@ class StageUpController extends Controller {
         $userId = SessionManager::getCurrentUserId();
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $keywords = $_GET['keywords'] ?? '';
-        $location = $_GET['location'] ?? '';
+
 
         if (!empty($keywords) || !empty($location)) {
             $offers = $this->model->searchWishlist($userId, $keywords, $location);
@@ -343,6 +400,12 @@ class StageUpController extends Controller {
         }
 
         $offers = is_array($offers) ? $offers : [];
+
+        // Pour chaque offre, récupérer le nom de l'entreprise
+        foreach ($offers as $key => $offer) {
+            $entreprise = $this->model->getEntrepriseById($offer['id_enterprise']);
+            $offers[$key]['name_enterprise'] = $entreprise[0]['name_enterprise'];
+        }
 
         $itemsPerPage = 10;
         $totalItems = count($offers);
@@ -362,7 +425,6 @@ class StageUpController extends Controller {
             'page' => $page,
             'totalPages' => $totalPages,
             'keywords' => $keywords,
-            'location' => $location
         ]);
     }
 

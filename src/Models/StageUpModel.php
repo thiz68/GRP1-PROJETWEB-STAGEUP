@@ -102,14 +102,17 @@ class StageUpModel extends Model {
 
             $offre = $requete_prep->fetch(PDO::FETCH_ASSOC);
 
-            if ($offre) {
-                // Ajouter les compétences à l'offre
-                $offre['skills'] = $this->getOfferSkills($id_offre);
+            if (!$offre) {
+                return []; //Tableau vide si pas trouvé
             }
+
+            //Ajout Compétences offres
+            $offre['skills'] = $this->getOfferSkills($id_offre);
 
             return $offre;
         } catch (PDOException $message_erreur) {
-            die("Erreur lors de la récupération de l'offre : " . $message_erreur->getMessage());
+            error_log("Erreur getOffreById: " . $message_erreur->getMessage());
+            return [];
         }
     }
 
@@ -349,8 +352,6 @@ class StageUpModel extends Model {
         }
     }
 
-
-
     public function post_form_modif_etudiant($id_user,$nom, $prenom, $email) {
         try {
             $requete = "UPDATE _user SET firstname_user = :prenom, lastname_user = :nom, email_user = :email
@@ -546,23 +547,6 @@ class StageUpModel extends Model {
         }
     }
 
-    public function isInWishlist($userId, $offerId) {
-        try {
-            $stmt = $this->pdo->prepare("
-            SELECT COUNT(*) as count
-            FROM wishlist 
-            WHERE id_user = :userId AND id_offers = :offerId
-        ");
-            $stmt->execute([
-                ':userId' => $userId,
-                ':offerId' => $offerId
-            ]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result['count'] > 0;
-        } catch (PDOException $message_erreur) {
-            die("Erreur lors de la vérification de la wishlist : " . $message_erreur->getMessage());
-        }
-    }
 
     public function searchWishlist($userId, $keywords = '', $location = '') {
         try {
@@ -571,12 +555,51 @@ class StageUpModel extends Model {
             FROM offers o
             JOIN wishlist w ON o.id_offers = w.id_offers
             WHERE w.id_user = :userId
-        ";
+            ";
 
             $params = [':userId' => $userId];
 
             if (!empty($keywords)) {
                 $query .= " AND (o.title_offer LIKE :keywords OR o.desc_offer LIKE :keywords)";
+                $params[':keywords'] = '%' . $keywords . '%';
+            }
+
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute($params);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la recherche dans la wishlist: " . $message_erreur->getMessage());
+        }
+    }
+
+    public function getUser_candidatures($userId) {
+        try {
+            $stmt = $this->pdo->prepare("
+            SELECT offers.* , application.*
+            FROM offers
+            JOIN application ON offers.id_offers = application.id_offers
+            WHERE application.id_user = :userId
+            ");
+            $stmt->execute([':userId' => $userId]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la récupération de la wishlist : " . $message_erreur->getMessage());
+        }
+    }
+
+    public function search_candidatures($userId, $keywords = '', $location = '') {
+        try {
+            $query = "
+            SELECT offers.*, application.*
+            FROM offers
+            JOIN application ON offers.id_offers = application.id_offers
+            WHERE application.id_user = :userId
+            ";
+
+            $params = [':userId' => $userId];
+
+            if (!empty($keywords)) {
+                $query .= " AND (offers.title_offer LIKE :keywords OR offers.desc_offer LIKE :keywords)";
                 $params[':keywords'] = '%' . $keywords . '%';
             }
 

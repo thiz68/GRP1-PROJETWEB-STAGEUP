@@ -125,7 +125,11 @@ switch ($uri) {
     case 'profil':
         $controller->afficher_profil();
         break;
-        
+
+    case 'mes_candidatures':
+        $controller->mes_candidatures();
+        break;
+
     case 'wishlist':
         $controller->wishlist();
         break;
