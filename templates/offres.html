@@ -3,8 +3,6 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="content-type" content="nosniff">
-	<meta http-equiv="x-ua-compatible" content="DENY">
 	<title>Web4All - Offres</title>
 	<link rel="stylesheet" href="http://stage.up/static/style_offres.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -16,6 +14,7 @@
 
 <!-- Search Section -->
 <section class="search-section">
+	<h2 class="sr-only">Recherche d'offres</h2>
 	<div class="search-container">
 		<form action="/?uri=offres" method="GET" class="search-group">
 			<input type="hidden" name="uri" value="offres">
@@ -43,13 +42,14 @@
 
 <!-- Job Listings -->
 <section class="job-listings">
+	<h2 class="sr-only">Liste des offres</h2>
 	{% if offres|length > 0 %}
 	{% for offer in offres|slice((page-1)*10, 10) %}
 	<div class="job-card">
 		<div class="job-info">
 			<h3 class="job-title">{{ offer.title_offer }}</h3>
 			<div class="company-info">
-				<a href="/?uri=page_entreprise&id_entreprise={{ offer.id_enterprise }}" style="color: inherit; text-decoration: none;">
+				<a href="/?uri=page_entreprise&amp;id_entreprise={{ offer.id_enterprise }}" style="color: inherit; text-decoration: none;">
 					<span class="company-name">{{ offer.name_enterprise }}</span>
 				</a>
 			</div>
@@ -60,7 +60,6 @@
 				<span class="publication-date"><i class="far fa-calendar-alt"></i> Fin : {{ offer.e_date_offer }}</span>
 			</div>
 
-			<!-- Ajout des compétences requises -->
 			{% if offer.skills|length > 0 %}
 			<div class="job-skills">
 				<div class="skills-tags">
@@ -72,8 +71,8 @@
 			{% endif %}
 		</div>
 		<div class="job-actions">
-			<a href="/?uri=postuler&id_offre={{ offer.id_offers }}" class="view-details-btn">Postuler</a>
-			<a href="/?uri=addToWishlist&id_offers={{ offer.id_offers }}" class="view-details-btn"><i class="fas fa-heart"></i> Ajouter</a>
+			<a href="/?uri=postuler&amp;id_offre={{ offer.id_offers }}" class="view-details-btn">Postuler</a>
+			<a href="/?uri=addToWishlist&amp;id_offers={{ offer.id_offers }}" class="view-details-btn"><i class="fas fa-heart"></i> Ajouter</a>
 		</div>
 	</div>
 	{% endfor %}
@@ -81,30 +80,6 @@
 	<div class="no-offers-message">
 		<h3>Aucune offre disponible</h3>
 		<p>Aucune offre ne correspond à vos critères de recherche.</p>
-	</div>
-	{% endif %}
-
-	<!-- Pagination -->
-	{% if totalPages > 1 %}
-	<div class="pagination" aria-label="Pagination">
-		<a href="/?uri=offres&page={{ page > 1 ? page - 1 : 1 }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}{% if keywords %}&keywords={{ keywords }}{% endif %}" class="prev-page" aria-label="Page précédente" {{ page <= 1 ? 'aria-disabled="true"' : '' }}><i class="fas fa-chevron-left"></i></a>
-
-		{% set startPage = max(1, page - 2) %}
-		{% set endPage = min(totalPages, startPage + 4) %}
-		{% if endPage - startPage < 4 %}
-		{% set startPage = max(1, endPage - 4) %}
-		{% endif %}
-
-		{% for i in startPage..endPage %}
-		<a href="/?uri=offres&page={{ i }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}{% if keywords %}&keywords={{ keywords }}{% endif %}" class="page-number {{ page == i ? 'active' : '' }}" {{ page == i ? 'aria-current="page"' : '' }}>{{ i }}</a>
-		{% endfor %}
-
-		{% if endPage < totalPages %}
-		<span class="page-ellipsis">...</span>
-		<a href="/?uri=offres&page={{ totalPages }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}{% if keywords %}&keywords={{ keywords }}{% endif %}" class="page-number">{{ totalPages }}</a>
-		{% endif %}
-
-		<a href="/?uri=offres&page={{ page < totalPages ? page + 1 : totalPages }}&id_entreprise={{ id_entreprise }}&salaire_min={{ salaire_min }}{% if keywords %}&keywords={{ keywords }}{% endif %}" class="next-page" aria-label="Page suivante" {{ page >= totalPages ? 'aria-disabled="true"' : '' }}><i class="fas fa-chevron-right"></i></a>
 	</div>
 	{% endif %}
 </section>
@@ -115,9 +90,7 @@
 <script>
 	const slider = document.getElementById('salaire_min');
 	const valueDisplay = document.getElementById('sliderValue');
-
 	valueDisplay.textContent = slider.value + ' €';
-
 	slider.addEventListener('input', () => {
 		valueDisplay.textContent = slider.value + ' €';
 	});
