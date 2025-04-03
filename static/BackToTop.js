@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         backToTopButton.classList.remove("show");
 
         window.addEventListener("scroll", function () {
-            if (window.scrollY > 250) { // Affiche le bouton après 300px de scroll
+            if (window.scrollY > 250) { // Affiche le bouton après 250px de scroll
                 backToTopButton.classList.add("show");
             } else {
                 backToTopButton.classList.remove("show");
