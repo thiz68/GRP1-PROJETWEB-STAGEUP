@@ -216,6 +216,40 @@ body {
     background-color: var(--primary-dark);
 }
 
+/* Pour creer_offre.css */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.skill-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Pour style_offres.css */
+.job-skills {
+    margin-top: 10px;
+}
+
+.skills-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.skill-tag {
+    background-color: rgba(217, 143, 255, 0.76);
+    padding: 3px 8px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    color: #333;
+}
+
 /* Pagination Styles */
 .pagination {
     display: flex;
