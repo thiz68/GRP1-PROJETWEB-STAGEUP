@@ -319,6 +319,10 @@ class StageUpController extends Controller {
         $this->render('404.html');
     }
 
+    public function page_interdite() {
+        $this->render('403.html');
+    }
+
     public function mentionslegales() {
         $this->render('mentionslegales.html');
     }
