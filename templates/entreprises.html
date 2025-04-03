@@ -111,15 +111,13 @@
 <!-- Footer -->
 <div data-include="http://stage.up/static/footer.html"></div>
 
-<script>
-	const slider = document.getElementById('note_min');
-	const valueDisplay = document.getElementById('sliderValue');
+<!-- Bouton Back to Top -->
+<button id="backToTop" title="Retour en haut">
+	<i class="fas fa-arrow-up"></i>
+</button>
 
-	valueDisplay.textContent = slider.value + ' / 5';
+<script src="http://stage.up/static/BackToTop.js"></script>
+<script src="http://stage.up/static/Slider.js"></script>
 
-	slider.addEventListener('input', () => {
-		valueDisplay.textContent = slider.value + ' / 5';
-	});
-</script>
 </body>
 </html>
