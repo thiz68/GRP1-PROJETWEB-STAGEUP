@@ -149,6 +149,10 @@ switch ($uri) {
         echo __DIR__;
         break;
 
+    case 'page_interdite':
+        $controller->page_interdite();
+        break;
+
     default:
         $controller->page_non_trouvee();
         break;
