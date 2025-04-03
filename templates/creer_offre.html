@@ -1,62 +1,77 @@
-
 <!DOCTYPE html>
-<html> 
-<head> 
-	<meta charset="utf-8">
-	<meta name="author" content="Clery G">
-	<link rel="stylesheet" href="http://stage.up/static/creer_offre.css">
-	    <script src="http://stage.up/static/include.js" defer></script>
-	<title>Création d'une offre</title> 
-</head> 
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Clery G">
+    <link rel="stylesheet" href="http://stage.up/static/creer_offre.css">
+    <script src="http://stage.up/static/include.js" defer></script>
+    <title>Création d'une offre</title>
+</head>
 
+<body>
+<header>
+    <!-- Navbar -->
+    <div data-include="http://stage.up/static/navbar.html"></div>
+</header>
 
+<div class="container">
+    <form class="modification-form" action="index.php" method="post">
+        <input type="hidden" name="uri" value="creer_offre">
+        <input type="hidden" name="id_entreprise" value="{{id_entreprise}}">
+        <h1>Création d'une offre</h1>
 
-	<header>
-        <!-- Navbar -->
-<div data-include="http://stage.up/static/navbar.html"></div>
-    </header>
+        <div class="form-group">
+            <label for="titre">Titre</label>
+            <input type="text" id="titre" name="titre" required>
+        </div>
 
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" placeholder="Ajoutez une courte description..." required></textarea>
+        </div>
 
-    <div class="container">
-        <form class="modification-form" action="index.php" method="post">
-            <input type="hidden" name="uri" value="creer_offre">
-            <input type="hidden" name="id_entreprise" value="{{id_entreprise}}">
-            <h1>Création d'une offre</h1>
-            
-            <div class="form-group">
-                <label>Titre</label>
-                <input type="text" id="titre" name="titre">
+        <div class="form-group">
+            <label for="salaire">Rémunération</label>
+            <input type="number" min="0" id="salaire" name="salaire" required>
+        </div>
+
+        <div class="form-group">
+            <label for="date_debut">Date de début</label>
+            <input type="date" id="date_debut" name="date_debut" required>
+        </div>
+
+        <div class="form-group">
+            <label for="date_fin">Date de fin</label>
+            <input type="date" id="date_fin" name="date_fin" required>
+        </div>
+
+        <!-- Section Compétences requises -->
+        <div class="form-group">
+            <label>Compétences requises</label>
+            <div class="skills-selector">
+                <div class="selected-skills" id="selected-skills">
+                    <span class="placeholder">Choisissez des compétences requises</span>
+                </div>
+                <div class="skills-dropdown">
+                    {% for skill in skills %}
+                    <div class="skill-item" data-id="{{skill.id_skill}}" data-name="{{skill.label_skill}}">
+                        {{skill.label_skill}}
+                        <input type="checkbox" id="skill_{{skill.id_skill}}" name="skills[]" value="{{skill.id_skill}}" style="display: none;">
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label>Description</label>
-                <textarea id="description" name="description" rows="4" placeholder="Ajoutez une courte description..."></textarea>
-            </div>
+        </div>
 
-            <div class="form-group">
-                <label>Rémunération</label>
-                <input type="number" min="0" id="salaire" name="salaire">
-            </div>
-
-            <div class="form-group">
-                <label>Date de début</label>
-                <input type="date" id="date_debut" name="date_debut">
-            </div>
-
-            <div class="form-group">
-                <label>Date de fin</label>
-                <input type="date" id="date_fin" name="date_fin">
-            </div>
-
-            <div class="button-group">
-                <button type="submit" class="btn btn-primary">Sauvegarder</button>
-            </div>
-        </form>
-    </div>
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        </div>
+    </form>
+</div>
 
 <!-- Footer -->
 <div data-include="http://stage.up/static/footer.html"></div>
-  
+<script src="http://stage.up/static/creer_offre.js" defer></script>
 <script src="https://stage.up/static/validation.js" defer></script>
 <script defer>
 document.addEventListener("DOMContentLoaded", () => {
@@ -72,6 +87,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 </script>
-
 </body>
 </html>
