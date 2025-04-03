@@ -430,10 +430,12 @@ class StageUpController extends Controller {
     }
 
     public function page_non_trouvee() {
+        http_response_code(404);
         $this->render('404.html');
     }
 
     public function page_interdite() {
+        http_response_code(403);
         $this->render('403.html');
     }
 
