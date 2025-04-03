@@ -43,13 +43,14 @@
            document.getElementById('cv').addEventListener('change', function() {
                 const file = this.files[0];
                 // Types de fichiers autorisés
-                const allowedTypes = [
-                    'application/pdf', 
-                    'application/msword', 
-                    'application/vnd.oasis.opendocument.text',
-                    'image/jpeg',
-                    'image/png'
-                ];
+		const allowedTypes = [
+		    'application/pdf',
+		    'application/msword', 
+		    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
+		    'application/vnd.oasis.opendocument.text',
+		    'image/jpeg',
+		    'image/png'
+		];
                 const maxSize = 8 * 1024 * 1024; // Taille maximale de 8Mo en octets
                 const errorDiv = document.getElementById('fileError');
 
