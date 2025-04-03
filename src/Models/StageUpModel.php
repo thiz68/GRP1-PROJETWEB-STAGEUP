@@ -36,11 +36,11 @@ class StageUpModel extends Model {
 
         $this->pdo = $this->connection->get_pdo();
     }
-
-    public function getEntreprises($note_min=0.0) {
+    
+    public function getEntrepriseById($id_entreprise=1) {
         try {
             $donnees = $this->pdo->query("
-                SELECT * from enterprises where enterprises.average_rating_enterprise >= ".$note_min.";");
+                SELECT * from enterprises where enterprises.id_enterprise = ".$id_entreprise.";");
             return $donnees->fetchAll();
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération des entreprises : " . $message_erreur->getMessage());
@@ -73,28 +73,67 @@ class StageUpModel extends Model {
 
     public function getOffres($id_entreprise=0, $salaire_min=0) {
         try {
-            if ($id_entreprise == 0) { $donnees = $this->pdo->query("SELECT * from offers where offers.remun_offer >= ".$salaire_min.";"); }
-            else { $donnees = $this->pdo->query("
+            if ($id_entreprise == 0) {
+                $donnees = $this->pdo->query("SELECT * from offers where offers.remun_offer >= ".$salaire_min.";");
+            } else {
+                $donnees = $this->pdo->query("
                 SELECT * from offers where offers.id_enterprise = ".$id_entreprise." 
-                and offers.remun_offer >= ".$salaire_min.";"); }
-            return $donnees->fetchAll();
+                and offers.remun_offer >= ".$salaire_min.";");
+            }
+
+            $offres = $donnees->fetchAll(PDO::FETCH_ASSOC);
+
+            // Ajouter les compétences à chaque offre
+            foreach ($offres as $key => $offre) {
+                $offres[$key]['skills'] = $this->getOfferSkills($offre['id_offers']);
+            }
+
+            return $offres;
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération des offres : " . $message_erreur->getMessage());
+        }
+    }
+
+    public function getOffreById($id_offre) {
+        try {
+            $requete = "SELECT * FROM offers WHERE id_offers = :id_offre";
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([':id_offre' => $id_offre]);
+
+            $offre = $requete_prep->fetch(PDO::FETCH_ASSOC);
+
+            if ($offre) {
+                // Ajouter les compétences à l'offre
+                $offre['skills'] = $this->getOfferSkills($id_offre);
+            }
+
+            return $offre;
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la récupération de l'offre : " . $message_erreur->getMessage());
         }
     }
 
 
     public function searchOffres($id_entreprise=0, $salaire_min=0, $keywords='') {
         try {
-            $query = "SELECT * FROM offers WHERE remun_offer >= :salaire_min";
+            $query = "SELECT o.* 
+                FROM offers o
+                LEFT JOIN requerir r ON o.id_offers = r.id_offers
+                LEFT JOIN skills s ON r.id_skill = s.id_skill
+                WHERE o.remun_offer >= :salaire_min";
 
             if ($id_entreprise != 0) {
-                $query .= " AND id_enterprise = :id_entreprise";
+                $query .= " AND o.id_enterprise = :id_entreprise";
             }
 
             if (!empty($keywords)) {
-                $query .= " AND (title_offer LIKE :keywords OR desc_offer LIKE :keywords)";
+                $query .= " AND (o.title_offer LIKE :keywords 
+                      OR o.desc_offer LIKE :keywords
+                      OR s.label_skill LIKE :keywords)";
             }
+
+            // Ajout du GROUP BY pour éviter les doublons
+            $query .= " GROUP BY o.id_offers";
 
             $stmt = $this->pdo->prepare($query);
 
@@ -109,19 +148,69 @@ class StageUpModel extends Model {
             }
 
             $stmt->execute($params);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Ajouter les compétences à chaque offre
+            foreach ($offres as $key => $offre) {
+                $offres[$key]['skills'] = $this->getOfferSkills($offre['id_offers']);
+            }
+
+            return $offres;
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la recherche des offres : " . $message_erreur->getMessage());
         }
     }
 
-    public function getEntreprise($id_entreprise=1) {
+    public function getSkills() {
         try {
-            $donnees = $this->pdo->query("
-                SELECT * from enterprises where enterprises.id_enterprise = ".$id_entreprise.";");
-            return $donnees->fetchAll();
+            $donnees = $this->pdo->query("SELECT * FROM skills ORDER BY label_skill");
+            return $donnees->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $message_erreur) {
-            die("Erreur lors de la récupération des entreprises : " . $message_erreur->getMessage());
+            die("Erreur lors de la récupération des compétences : " . $message_erreur->getMessage());
+        }
+    }
+
+    public function getOfferSkills($id_offre) {
+        try {
+            $requete = "SELECT s.id_skill, s.label_skill 
+                    FROM skills s 
+                    JOIN requerir r ON s.id_skill = r.id_skill 
+                    WHERE r.id_offers = :id_offre
+                    ORDER BY s.label_skill";
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([':id_offre' => $id_offre]);
+            return $requete_prep->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la récupération des compétences de l'offre : " . $message_erreur->getMessage());
+        }
+    }
+
+    public function addOfferSkills($id_offre, $skills = []) {
+        try {
+            // Supprimer d'abord toutes les compétences associées à cette offre
+            $delete = $this->pdo->prepare("DELETE FROM requerir WHERE id_offers = :id_offre");
+            $delete->execute([':id_offre' => $id_offre]);
+
+            // Si aucune compétence n'est fournie, on s'arrête là
+            if (empty($skills)) {
+                return true;
+            }
+
+            // Préparer la requête d'insertion
+            $requete = "INSERT INTO requerir (id_offers, id_skill) VALUES (:id_offre, :id_skill)";
+            $stmt = $this->pdo->prepare($requete);
+
+            // Insérer chaque compétence
+            foreach ($skills as $skill_id) {
+                $stmt->execute([
+                    ':id_offre' => $id_offre,
+                    ':id_skill' => $skill_id
+                ]);
+            }
+
+            return true;
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de l'ajout des compétences à l'offre : " . $message_erreur->getMessage());
         }
     }
 
@@ -205,11 +294,11 @@ class StageUpModel extends Model {
         }
     }
 
-    public function post_form_creer_offre($id_entreprise, $titre, $description, $salaire, $date_debut, $date_fin) {
+        public function post_form_creer_offre($id_entreprise, $titre, $description, $salaire, $date_debut, $date_fin, $skills = []) {
         try {
             $requete = "INSERT INTO offers (id_enterprise, title_offer, desc_offer, remun_offer, s_date_offer, e_date_offer)
-                    VALUES (:id_entreprise, :titre, :description, :salaire, :date_debut, :date_fin);";
-    
+                VALUES (:id_entreprise, :titre, :description, :salaire, :date_debut, :date_fin);";
+
             $requete_prep = $this->pdo->prepare($requete);
             $requete_prep->execute([
                 ':id_entreprise' => $id_entreprise,
@@ -219,12 +308,20 @@ class StageUpModel extends Model {
                 ':date_debut' => $date_debut,
                 ':date_fin' => $date_fin
             ]);
+
+            // Récupérer l'ID de l'offre nouvellement créée
+            $id_offre = $this->pdo->lastInsertId();
+
+            // Ajouter les compétences requises
+            if (!empty($skills)) {
+                $this->addOfferSkills($id_offre, $skills);
+            }
+
+            return $id_offre;
         } catch (PDOException $message_erreur) {
             die("Erreur lors de l'insertion des donnees de l'offre: " . $message_erreur->getMessage());
         }
     }
-
-
 
     public function get_liste_etudiants() {
         try {
@@ -303,6 +400,35 @@ class StageUpModel extends Model {
             ]);
         } catch (PDOException $message_erreur) {
             die("Erreur lors de l'insertion des donnees de l'entreprise: " . $message_erreur->getMessage());
+        }
+    }
+
+    public function post_form_modif_offre($id_offre, $titre, $description, $salaire, $date_debut, $date_fin, $skills = []) {
+        try {
+            $requete = "UPDATE offers SET 
+                    title_offer = :titre, 
+                    desc_offer = :description, 
+                    remun_offer = :salaire, 
+                    s_date_offer = :date_debut, 
+                    e_date_offer = :date_fin
+                    WHERE id_offers = :id_offre";
+
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_offre' => $id_offre,
+                ':titre' => $titre,
+                ':description' => $description,
+                ':salaire' => $salaire,
+                ':date_debut' => $date_debut,
+                ':date_fin' => $date_fin
+            ]);
+
+            // Mettre à jour les compétences requises
+            $this->addOfferSkills($id_offre, $skills);
+
+            return true;
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la modification des donnees de l'offre: " . $message_erreur->getMessage());
         }
     }
 

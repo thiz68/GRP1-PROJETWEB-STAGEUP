@@ -72,7 +72,7 @@ class StageUpController extends Controller {
 
         // Pour chaque offre, récupérer le nom de l'entreprise
         foreach ($offres as $key => $offer) {
-            $entreprise = $this->model->getEntreprise($offer['id_enterprise']);
+            $entreprise = $this->model->getEntrepriseById($offer['id_enterprise']);
             $offres[$key]['name_enterprise'] = $entreprise[0]['name_enterprise'];
         }
 
@@ -99,7 +99,7 @@ class StageUpController extends Controller {
 
     public function page_entreprise() {
         if (isset($_GET['id_entreprise'])) : $id_entreprise = $_GET['id_entreprise']; else : $id_entreprise=1; endif;
-        $infos_entreprise = $this->model->getEntreprise($id_entreprise);
+        $infos_entreprise = $this->model->getEntrepriseById($id_entreprise);
         $id_utilisateur = SessionManager::getCurrentUserId();
         $note_attribuee = $this->model->get_note_attribuee($id_utilisateur,$id_entreprise);
         $this->render('page_entreprise.html', ['infos_entreprise' => $infos_entreprise, 'note_attribuee' => $note_attribuee]);
@@ -161,16 +161,31 @@ class StageUpController extends Controller {
     }
 
     public function page_creer_offre() {
-        $this->render('creer_offre.html', ['id_entreprise' => $_GET['id_entreprise']]);
+        // Récupérer la liste des compétences
+        $skills = $this->model->getSkills();
+
+        $this->render('creer_offre.html', [
+            'id_entreprise' => $_GET['id_entreprise'],
+            'skills' => $skills
+        ]);
     }
 
     public function creer_offre() {
-        $this->model->post_form_creer_offre($_POST['id_entreprise'],$_POST['titre'],
-                                            $_POST['description'],$_POST['salaire'],
-                                            $_POST['date_debut'],$_POST['date_fin']);
+        // Récupérer les compétences sélectionnées
+        $selectedSkills = $_POST['skills'] ?? [];
+
+        $id_offre = $this->model->post_form_creer_offre(
+            $_POST['id_entreprise'],
+            $_POST['titre'],
+            $_POST['description'],
+            $_POST['salaire'],
+            $_POST['date_debut'],
+            $_POST['date_fin'],
+            $selectedSkills
+        );
+
         header("Location: ?uri=offres");
     }
-
 
     public function page_modif_entreprise() {
         $this->render('modif_entreprise.html', ['id_entreprise' => $_GET['id_entreprise']]);
@@ -183,16 +198,46 @@ class StageUpController extends Controller {
     }
 
     public function page_modif_offre() {
-        
+        $id_offre = $_GET['id_offre'];
+
+        // Récupérer les détails de l'offre
+        $offre = $this->model->getOffreById($id_offre);
+
+        // Récupérer toutes les compétences disponibles
+        $skills = $this->model->getSkills();
+
+        // Préparer un tableau des IDs de compétences requises pour cette offre
+        $selectedSkillIds = [];
+        foreach ($offre['skills'] as $skill) {
+            $selectedSkillIds[] = $skill['id_skill'];
+        }
+
+        $this->render('modif_offre.html', [
+            'offre' => $offre,
+            'skills' => $skills,
+            'selectedSkillIds' => $selectedSkillIds
+        ]);
     }
 
     public function modif_offre() {
-        
+        // Récupérer les compétences sélectionnées
+        $selectedSkills = $_POST['skills'] ?? [];
+
+        $this->model->post_form_modif_offre(
+            $_POST['id_offre'],
+            $_POST['titre'],
+            $_POST['description'],
+            $_POST['salaire'],
+            $_POST['date_debut'],
+            $_POST['date_fin'],
+            $selectedSkills
+        );
+
+        header("Location: ?uri=offres");
     }
 
     public function page_postuler() {
-        $id_offre = $_GET['id_offre'];
-        $this->render('postuler.html', ['id_offre' => $id_offre]);
+        $this->render('postuler.html', ['id_offre' => $_GET['id_offre']]);
     }
 
     public function postuler() {
@@ -216,9 +261,6 @@ class StageUpController extends Controller {
         $pilotes = $this->model->get_liste_pilotes();
         $this->render('pilotes.html', ['pilotes' => $pilotes, 'page' => $page]);
     }
-
-
-
 
     public function afficher_login($error = null, $email = null) {
         $session_expired = isset($_GET['expired']);
