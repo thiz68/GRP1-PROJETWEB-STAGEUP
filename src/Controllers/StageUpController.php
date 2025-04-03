@@ -258,8 +258,6 @@ class StageUpController extends Controller {
         header("Location: /?uri=offres");
     }
 
-
-
     public function liste_etudiants() {
         if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
         $etudiants = $this->model->get_liste_etudiants();
@@ -346,8 +344,8 @@ class StageUpController extends Controller {
         $keywords = $_GET['keywords'] ?? '';
 
 
-        if (!empty($keywords) || !empty($location)) {
-            $offers = $this->model->search_candidatures($userId, $keywords, $location);
+        if (!empty($keywords)) {
+            $offers = $this->model->search_candidatures($userId, $keywords);
         } else {
             $offers = $this->model->getUser_candidatures($userId);
         }
@@ -393,8 +391,8 @@ class StageUpController extends Controller {
         $keywords = $_GET['keywords'] ?? '';
 
 
-        if (!empty($keywords) || !empty($location)) {
-            $offers = $this->model->searchWishlist($userId, $keywords, $location);
+        if (!empty($keywords)) {
+            $offers = $this->model->searchWishlist($userId, $keywords);
         } else {
             $offers = $this->model->getUserWishlist($userId);
         }
@@ -459,6 +457,48 @@ class StageUpController extends Controller {
 
         header('Location: /?uri=wishlist');
         exit;
+    }
+
+    public function statistiques() {
+        $total_offres = $this->model->getTotalOffres();
+        $total_entreprises = $this->model->getTotalEntreprises();
+        $total_etudiants = $this->model->getTotalEtudiants();
+        $avg_candidatures = $this->model->getAvgCandidatures();
+
+        //Compétences
+        $skills_stats = $this->model->getSkillsStats();
+        $skills_labels = array_column($skills_stats, 'label_skill');
+        $skills_data = array_column($skills_stats, 'count');
+
+        //Durée
+        $duration_stats = $this->model->getDurationStats();
+        $duration_labels = array_column($duration_stats, 'duration_range');
+        $duration_data = array_column($duration_stats, 'count');
+
+        //Wishlist
+        $wishlist_stats = $this->model->getWishlistStats();
+        $wishlist_labels = array_column($wishlist_stats, 'title_offer');
+        $wishlist_data = array_column($wishlist_stats, 'wishlist_count');
+
+        //Salaire
+        $salary_stats = $this->model->getSalaryStats();
+        $salary_labels = array_column($salary_stats, 'salary_range');
+        $salary_data = array_column($salary_stats, 'count');
+
+        $this->render('statistiques.html', [
+            'total_offres' => $total_offres,
+            'total_entreprises' => $total_entreprises,
+            'total_etudiants' => $total_etudiants,
+            'avg_candidatures' => $avg_candidatures,
+            'skills_labels' => $skills_labels,
+            'skills_data' => $skills_data,
+            'duration_labels' => $duration_labels,
+            'duration_data' => $duration_data,
+            'wishlist_labels' => $wishlist_labels,
+            'wishlist_data' => $wishlist_data,
+            'salary_labels' => $salary_labels,
+            'salary_data' => $salary_data
+        ]);
     }
 
 

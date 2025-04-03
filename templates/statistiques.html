@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Stage Up - Statistiques</title>
+  <link rel="stylesheet" href="http://stage.up/static/statistiques.css">
+  <script src="http://stage.up/static/include.js" defer></script>
+</head>
+<body>
+{% block navbar %}
+<div data-include="http://stage.up/static/navbar.html"></div>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+  <h1>Dashboard des Stages</h1>
+
+  <div class="stats-grid">
+    <!-- Carte 1 : Nombre total d'offres -->
+    <div class="stat-card">
+      <div class="stat-value">{{ total_offres }}</div>
+      <div class="stat-label">Offres de stage</div>
+    </div>
+
+    <!-- Carte 2 : Nombre d'entreprises -->
+    <div class="stat-card">
+      <div class="stat-value">{{ total_entreprises }}</div>
+      <div class="stat-label">Entreprises</div>
+    </div>
+
+    <!-- Carte 3 : Nombre d'étudiants -->
+    <div class="stat-card">
+      <div class="stat-value">{{ total_etudiants }}</div>
+      <div class="stat-label">Étudiants</div>
+    </div>
+
+    <!-- Carte 4 : Candidatures moyennes -->
+    <div class="stat-card">
+      <div class="stat-value">{{ avg_candidatures|number_format(1) }}</div>
+      <div class="stat-label">Candidatures/étudiant</div>
+    </div>
+  </div>
+
+  <div class="charts-container">
+    <!-- Graphique 1 : Répartition par compétences -->
+    <div class="chart-card">
+      <h2>Répartition par compétences</h2>
+      <canvas id="skillsChart"></canvas>
+    </div>
+
+    <!-- Graphique 2 : Durée des stages -->
+    <div class="chart-card">
+      <h2>Durée des stages</h2>
+      <canvas id="durationChart"></canvas>
+    </div>
+
+    <!-- Graphique 3 : Top des offres en wishlist -->
+    <div class="chart-card">
+      <h2>Top des offres en wishlist</h2>
+      <canvas id="wishlistChart"></canvas>
+    </div>
+
+    <!-- Graphique 4 : Répartition par rémunération -->
+    <div class="chart-card">
+      <h2>Rémunération des stages</h2>
+      <canvas id="salaryChart"></canvas>
+    </div>
+  </div>
+</div>
+{% endblock %}
+<div data-include="http://stage.up/static/footer.html"></div>
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Définition des données pour les graphiques
+  const skills_labels = {{ skills_labels|json_encode|raw }};
+  const skills_data = {{ skills_data|json_encode|raw }};
+
+  const duration_labels = {{ duration_labels|json_encode|raw }};
+  const duration_data = {{ duration_data|json_encode|raw }};
+
+  const wishlist_labels = {{ wishlist_labels|json_encode|raw }};
+  const wishlist_data = {{ wishlist_data|json_encode|raw }};
+
+  const salary_labels = {{ salary_labels|json_encode|raw }};
+  const salary_data = {{ salary_data|json_encode|raw }};
+</script>
+<script src="/static/statistiques.js"></script>
+{% endblock %}
+</body>
+</html>

@@ -157,6 +157,10 @@ switch ($uri) {
         $controller->page_interdite();
         break;
 
+    case 'statistiques':
+        $controller->statistiques();
+        break;
+
     default:
         $controller->page_non_trouvee();
         break;

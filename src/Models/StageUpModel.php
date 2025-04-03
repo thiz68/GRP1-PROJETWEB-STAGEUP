@@ -25,6 +25,7 @@ class StageUpModel extends Model {
 
     public function __construct($connection = null) {
 
+        global $host, $dbname, $username, $password;
         if (is_null($connection)) {
             require_once __DIR__ . '/bdd_info.php';
             $this->connection = new Database($host, $dbname, $username, $password);
@@ -648,6 +649,99 @@ class StageUpModel extends Model {
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération de l'utilisateur et son rôle : " . $message_erreur->getMessage());
         }
+    }
+
+    public function getTotalOffres() {
+        $stmt = $this->pdo->query("SELECT COUNT(*) FROM offers");
+        return $stmt->fetchColumn();
+    }
+
+    public function getTotalEntreprises() {
+        $stmt = $this->pdo->query("SELECT COUNT(*) FROM enterprises");
+        return $stmt->fetchColumn();
+    }
+
+    public function getTotalEtudiants() {
+        $stmt = $this->pdo->query("SELECT COUNT(*) FROM _user WHERE id_rank = 3");
+        return $stmt->fetchColumn();
+    }
+
+    public function getAvgCandidatures() {
+        $stmt = $this->pdo->query("SELECT AVG(nb_candidatures) FROM _user WHERE id_rank = 3");
+        return $stmt->fetchColumn();
+    }
+
+    public function getSkillsStats() {
+        $query = "
+        SELECT s.label_skill, COUNT(r.id_offers) as count
+        FROM skills s
+        LEFT JOIN requerir r ON s.id_skill = r.id_skill
+        GROUP BY s.label_skill
+        ORDER BY count DESC
+    ";
+        $stmt = $this->pdo->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDurationStats() {
+        $query = "
+        SELECT 
+            CASE 
+                WHEN DATEDIFF(e_date_offer, s_date_offer) < 30 THEN 'Moins d\'1 mois'
+                WHEN DATEDIFF(e_date_offer, s_date_offer) BETWEEN 30 AND 89 THEN '1 à 3 mois'
+                WHEN DATEDIFF(e_date_offer, s_date_offer) BETWEEN 90 AND 179 THEN '3 à 6 mois'
+                ELSE 'Plus de 6 mois'
+            END as duration_range,
+            COUNT(*) as count
+        FROM offers
+        GROUP BY duration_range
+        ORDER BY 
+            CASE duration_range
+                WHEN 'Moins d\'1 mois' THEN 1
+                WHEN '1 à 3 mois' THEN 2
+                WHEN '3 à 6 mois' THEN 3
+                ELSE 4
+            END
+    ";
+        $stmt = $this->pdo->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getWishlistStats() {
+        $query = "
+        SELECT o.title_offer, COUNT(w.id_user) as wishlist_count
+        FROM wishlist w
+        JOIN offers o ON w.id_offers = o.id_offers
+        GROUP BY o.title_offer
+        ORDER BY wishlist_count DESC
+        LIMIT 5
+    ";
+        $stmt = $this->pdo->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSalaryStats() {
+        $query = "
+        SELECT 
+            CASE 
+                WHEN remun_offer < 500 THEN 'Moins de 500€'
+                WHEN remun_offer BETWEEN 500 AND 999 THEN '500-999€'
+                WHEN remun_offer BETWEEN 1000 AND 1499 THEN '1000-1499€'
+                ELSE '1500€ et plus'
+            END as salary_range,
+            COUNT(*) as count
+        FROM offers
+        GROUP BY salary_range
+        ORDER BY 
+            CASE salary_range
+                WHEN 'Moins de 500€' THEN 1
+                WHEN '500-999€' THEN 2
+                WHEN '1000-1499€' THEN 3
+                ELSE 4
+            END
+    ";
+        $stmt = $this->pdo->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
