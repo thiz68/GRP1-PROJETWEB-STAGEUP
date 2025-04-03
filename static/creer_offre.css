@@ -103,3 +103,94 @@ input {
     color: white;
 }
 
+/* Style pour le sélecteur de compétences */
+.skills-selector {
+    position: relative;
+    width: 100%;
+}
+
+.selected-skills {
+    background-color: var(--white);
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    min-height: 44px;
+    padding: 8px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    cursor: pointer;
+    position: relative;
+    align-items: center;
+}
+
+.selected-skills::after {
+    content: '▼';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dark-gray);
+    font-size: 12px;
+    transition: transform var(--transition-default);
+}
+
+.selected-skills.active::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.selected-skills .placeholder {
+    color: var(--dark-gray);
+}
+
+.skill-tag {
+    background-color: var(--primary-light);
+    color: var(--white);
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.skill-tag .remove-skill {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.skills-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    border: 1px solid var(--medium-gray);
+    border-top: none;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    display: none;
+    box-shadow: var(--box-shadow);
+}
+
+.skills-dropdown.show {
+    display: block;
+}
+
+.skill-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background-color var(--transition-default);
+}
+
+.skill-item:hover {
+    background-color: var(--light-gray);
+}
+
+.skill-item.selected {
+    background-color: var(--primary-light);
+    color: var(--white);
+}
+
