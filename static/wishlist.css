@@ -273,9 +273,43 @@ body {
     margin: 0 0.5rem;
 }
 
+/* Back to Top Button */
+#backToTop {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background-color: #AB1BEE;
+    color: white;
+    border: none;
+    padding: 16px 20px;
+    font-size: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px); /* Départ légèrement en bas */
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#backToTop.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Remonte doucement */
+}
+
+#backToTop:hover {
+    background-color: #ae789b;
+}
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+    #backToTop{
+        padding: 8px 12px;
+        bottom: 10px;
+        right: 10px;
+    }
     .job-card {
         flex-direction: column;
     }
@@ -287,6 +321,11 @@ body {
 }
 
 @media (max-width: 576px) {
+    #backToTop{
+        padding: 4px 8px;
+        bottom: 5px;
+        right: 5px;
+    }
     .navbar {
         flex-direction: column;
         gap: 1rem;
