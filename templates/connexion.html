@@ -40,5 +40,19 @@
         <p>Connectez-vous pour accéder à votre espace personnel.</p>
     </div>
 </div>
+
+<script src="https://stage.up/static/validation.js" defer></script>
+<script defer>
+document.addEventListener("DOMContentLoaded", () => {
+    initFormValidation({
+        selector: "#connect-form",
+        fields: {
+            email: document.getElementById("emailInput"),
+            password: document.getElementById("passwordInput")
+        }
+    });
+});
+</script>
+
 </body>
 </html>
