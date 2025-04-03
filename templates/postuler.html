@@ -5,14 +5,14 @@
 	<meta charset="utf-8">
 	<meta name="author" content="Clery G">
     <script src="http://stage.up/static/include.js" defer></script>
-	<link rel="stylesheet" href="postuler.css">
+	<link rel="stylesheet" href="http://stage.up/static/postuler.css">
 	<title>Postuler</title> 
 </head> 
 
 <div data-include="http://stage.up/static/navbar.html"></div>
 
     <div class="container">
-        <form class="modification-form" action="index.php" method="post">
+        <form class="modification-form" enctype="multipart/form-data" action="/" method="POST">
             <input type="hidden" name="uri" value="postuler">
             <input type="hidden" name="id_offre" value="{{id_offre}}">
             <h1>Postuler à une offre</h1>
@@ -29,7 +29,8 @@
             </div>
 
             <div class="button-group">
-                <a class ="btn btn-secondary" href="http://stage.up/template/supprconfirmcompte.html">Supprimer le compte</a>
+                <a class ="btn btn-secondary" href="http://stage.up/?uri=supp_offre&id_offre={{id_offre}}">Supprimer l'offre</a>
+                <a class ="btn btn-secondary" href="http://stage.up/?uri=modif_offre&id_offre={{id_offre}}">Modifier l'offre</a>
                 <button type="submit" class="btn btn-primary">Postuler</button>
             </div>
 

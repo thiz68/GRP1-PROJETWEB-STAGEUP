@@ -145,6 +145,10 @@ switch ($uri) {
         $controller->mentionslegales();
         break;
 
+    case 'test':
+        echo __DIR__;
+        break;
+
     default:
         $controller->page_non_trouvee();
         break;

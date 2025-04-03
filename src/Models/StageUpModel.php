@@ -308,7 +308,17 @@ class StageUpModel extends Model {
 
     public function post_form_postuler($id_utilisateur, $id_offre, $motivation, $cv) {
         try {
-            
+            $requete = "SELECT COUNT(*) FROM application WHERE id_user = :id_utilisateur AND id_offers = :id_offre;";
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_utilisateur' => $id_utilisateur,
+                ':id_offre' => $id_offre
+            ]);
+        
+            if ($requete_prep->fetchColumn() > 0) {
+                die("Vous avez déjà postulé à cette offre.");
+            }
+
             $extensions_autorisees = ["pdf", "png", "jpg", "odt", "docx"];
             $mimes_autorises = [
                 "pdf" => "application/pdf",
@@ -320,7 +330,7 @@ class StageUpModel extends Model {
             
             
             if (!isset($cv) || empty($cv['name'])) {
-                throw new Exception("Aucun fichier sélectionné.");
+                die("Aucun fichier sélectionné.");
             }
     
             
@@ -329,21 +339,21 @@ class StageUpModel extends Model {
     
             
             if (!in_array($extension, $extensions_autorisees) || $type_mime !== $mimes_autorises[$extension]) {
-                throw new Exception("Format de fichier non autorisé.");
+                die("Format de fichier non autorisé.");
             }
     
             
             if ($cv['size'] > 8 * 1024 * 1024) {
-                throw new Exception("Le fichier dépasse la taille maximale autorisée de 8 Mo.");
+                die("Le fichier dépasse la taille maximale autorisée de 8 Mo.");
             }
     
             
             $nom_fichier = "etudiant_" . $id_utilisateur . "_offre_" . $id_offre . "." . $extension;
-            $chemin_destination = __DIR__ . "../uploads/cv/" . $nom_fichier;
-    
-            
+            $chemin_destination = __DIR__ . "/../../uploads/cv/" . $nom_fichier;
+
+                        
             if (!move_uploaded_file($cv['tmp_name'], $chemin_destination)) {
-                throw new Exception("Erreur lors du téléchargement du fichier.");
+                die("Erreur lors du téléchargement du fichier.");
             }
     
             
@@ -357,8 +367,8 @@ class StageUpModel extends Model {
                 ':motivation' => $motivation,
                 ':nom_fichier' => $nom_fichier,
             ]);
-    
-            return true;
+
+        
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la candidature : " . $message_erreur->getMessage());
         }

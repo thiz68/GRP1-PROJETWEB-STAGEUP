@@ -30,17 +30,13 @@ class StageUpController extends Controller {
     }
 
     public function liste_entreprises() {
-        $this->requireAuthentication();
 
-        // Récupération des paramètres
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $note_min = isset($_GET['note_min']) ? (float)$_GET['note_min'] : 0.0;
         $keywords = $_GET['keywords'] ?? '';
 
-        // Récupération des entreprises filtrées
         $entreprises = $this->model->searchEntreprises($keywords, $note_min);
 
-        // Calcul du nombre total de pages
         $itemsPerPage = 10;
         $totalItems = count($entreprises);
         $totalPages = ceil($totalItems / $itemsPerPage);
@@ -49,7 +45,7 @@ class StageUpController extends Controller {
         if ($page < 1) {
             $page = 1;
         }
-        if ($page > $totalPages && $totalPages > 0) {
+        elseif ($page > $totalPages && $totalPages > 0) {
             $page = $totalPages;
         }
 
@@ -87,7 +83,7 @@ class StageUpController extends Controller {
         if ($page < 1) {
             $page = 1;
         }
-        if ($page > $totalPages && $totalPages > 0) {
+        elseif ($page > $totalPages && $totalPages > 0) {
             $page = $totalPages;
         }
 
@@ -195,14 +191,16 @@ class StageUpController extends Controller {
     }
 
     public function page_postuler() {
-        $this->render('postuler.html', ['id_offre' => $_GET['id_offre']]);
+        $id_offre = $_GET['id_offre'];
+        $this->render('postuler.html', ['id_offre' => $id_offre]);
     }
 
     public function postuler() {
+
         $id_utilisateur = SessionManager::getCurrentUserId();
-        $this->model->post_form_postuler($id_utilisateur,$_POST['id_offre'],$_POST['motivation'],
-        $_FILES['cv']);
-        header("Location: /");
+        $this->model->post_form_postuler($id_utilisateur,$_POST['id_offre'],
+                                        $_POST['motivation'], $_FILES['cv']);
+        header("Location: /?uri=offres");
     }
 
 
