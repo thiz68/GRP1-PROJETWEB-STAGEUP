@@ -101,6 +101,19 @@ switch ($uri) {
     case 'modif_offre':
         $controller->modif_offre();
         break;
+    case 'supp_entreprise':
+        $controller->supp_entreprise();
+        break;
+    case 'supp_offre':
+        $controller->supp_offre();
+        break;
+    case 'supp_pilote':
+        $controller->supp_pilote();
+        break;
+    case 'supp_etudiant':
+        $controller->supp_etudiant();
+        break;
+
     case 'page_postuler':
         $controller->page_postuler();
         break;

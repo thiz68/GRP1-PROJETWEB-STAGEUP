@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Stage Up - Connexion</title>
-    <link href="http://stage.up/static/style_connexion.css" rel="stylesheet">
+    <link href="http://static.stage.up/style_connexion.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -14,13 +14,13 @@
                 <label>
                     <input type="email" name="email" placeholder="Email" id="emailInput" value="{{ email ?? '' }}" required>
                 </label>
-                <img src="http://stage.up/static/user-fill.svg" class="icon" alt="Email Icon">
+                <img src="http://static.stage.up/user-fill.svg" class="icon" alt="Email Icon">
             </div>
             <div class="input-box">
                 <label>
                     <input type="password" name="password" placeholder="Mot de passe" id="passwordInput" required>
                 </label>
-                <img src="http://stage.up/static/lock-2-fill.svg" class="icon" alt="Password Icon">
+                <img src="http://static.stage.up/lock-2-fill.svg" class="icon" alt="Password Icon">
             </div>
             {% if error %}
             <div class="errorMsg" id="errorMsg" style="color: red; margin-bottom: 10px;">
@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<script src="http://stage.up/static/validation.js" defer></script>
+<script src="http://static.stage.up/validation.js" defer></script>
 <script defer>
 document.addEventListener("DOMContentLoaded", () => {
     initFormValidation({

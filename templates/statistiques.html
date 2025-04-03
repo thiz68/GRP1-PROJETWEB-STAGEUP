@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Stage Up - Statistiques</title>
-  <link rel="stylesheet" href="http://stage.up/static/statistiques.css">
-  <script src="http://stage.up/static/include.js" defer></script>
+  <link rel="stylesheet" href="http://static.stage.up/statistiques.css">
+  <script src="http://static.stage.up/include.js" defer></script>
 </head>
 <body>
-{% block navbar %}
-<div data-include="http://stage.up/static/navbar.html"></div>
-{% endblock %}
+
+<div data-include="http://stage.up/templates/navbar.html"></div>
+
 
 {% block content %}
 <div class="dashboard-container">
@@ -70,7 +70,7 @@
   </div>
 </div>
 {% endblock %}
-<div data-include="http://stage.up/static/footer.html"></div>
+<div data-include="http://stage.up/templates/footer.html"></div>
 {% block javascripts %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -87,7 +87,7 @@
   const salary_labels = {{ salary_labels|json_encode|raw }};
   const salary_data = {{ salary_data|json_encode|raw }};
 </script>
-<script src="/static/statistiques.js"></script>
+<script src="http://static.stage.up/statistiques.js"></script>
 {% endblock %}
 </body>
 </html>

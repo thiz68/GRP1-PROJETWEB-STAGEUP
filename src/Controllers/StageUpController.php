@@ -438,7 +438,7 @@ class StageUpController extends Controller {
         http_response_code(403);
         $this->render('403.html');
     }
-
+    
     public function mentionslegales() {
         $this->render('mentionslegales.html');
     }
