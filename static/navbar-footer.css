@@ -45,14 +45,12 @@
 .nav-logo {
     text-align: center;
     flex: 1;
-
 }
 
 .nav-logo h1 {
     color: var(--primary-color);
     font-weight: bold;
     font-size: 1.8rem;
-
 }
 
 .head_logo {
@@ -102,6 +100,7 @@
     background-color: var(--primary-dark);
 }
 
+/* Footer Styles */
 footer {
     background-color: white;
     padding: 15px 0;
@@ -118,9 +117,73 @@ footer {
     padding: 0 20px;
 }
 
-
-
 .footer-copyright {
     color: #757575;
     font-size: 0.9rem;
+}
+
+/* Media Queries */
+@media (max-width: 992px) {
+    .navbar {
+        padding: 1rem;
+    }
+
+    .nav-logo h1 {
+        font-size: 1.5rem;
+    }
+
+    .nav-link {
+        margin-right: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-left, .nav-right {
+        width: 100%;
+        justify-content: center;
+        margin: 0.5rem 0;
+    }
+
+    .nav-logo {
+        order: -1;
+        margin-bottom: 0.5rem;
+    }
+
+    .nav-logo h1 {
+        font-size: 1.8rem;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-copyright {
+        margin-top: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .nav-logo h1 {
+        font-size: 1.5rem;
+    }
+
+    .nav-link {
+        margin-right: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .nav-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .footer-copyright {
+        font-size: 0.8rem;
+    }
 }

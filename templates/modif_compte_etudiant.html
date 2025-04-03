@@ -17,7 +17,7 @@
     </header>
 
     <div class="container">
-        <form class="modification-form" action="index.php" method="post">
+        <form class="modification-form" action="/" method="post">
             <input type="hidden" name="uri" value="modif_compte_etudiant">
             <input type="hidden" name="id_etudiant" value="{{ id_etudiant }}">
             <h1>Modification compte Étudiant</h1>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="button-group">
-                <a class ="btn btn-secondary" href="?uri=supp_compte_etudiant">Supprimer le compte</a>
+                <a class ="btn btn-secondary" href="?uri=supp_etudiant&id_utilisateur={{id_etudiant}}">Supprimer l'étudiant</a>
                 <button type="submit" class="btn btn-primary">Sauvegarder</button>
             </div>
         </form>
@@ -47,7 +47,7 @@
 <!-- Footer -->
 <div data-include="http://stage.up/static/footer.html"></div>
     
-<script src="https://stage.up/static/validation.js" defer></script>
+<script src="http://stage.up/static/validation.js" defer></script>
 <script defer>
 document.addEventListener("DOMContentLoaded", () => {
     initFormValidation({

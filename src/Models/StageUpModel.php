@@ -38,11 +38,11 @@ class StageUpModel extends Model {
         $this->pdo = $this->connection->get_pdo();
     }
     
-    public function getEntrepriseById($id_entreprise=1) {
+    public function getEntrepriseById($id_entreprise = 1) {
         try {
-            $donnees = $this->pdo->query("
-                SELECT * from enterprises where enterprises.id_enterprise = ".$id_entreprise.";");
-            return $donnees->fetchAll();
+            $stmt = $this->pdo->prepare("SELECT * FROM enterprises WHERE enterprises.id_enterprise = :id_entreprise");
+            $stmt->execute([':id_entreprise' => $id_entreprise]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération des entreprises : " . $message_erreur->getMessage());
         }
@@ -72,19 +72,24 @@ class StageUpModel extends Model {
     }
 
 
-    public function getOffres($id_entreprise=0, $salaire_min=0) {
+    public function getOffres($id_entreprise = 0, $salaire_min = 0) {
         try {
             if ($id_entreprise == 0) {
-                $donnees = $this->pdo->query("SELECT * from offers where offers.remun_offer >= ".$salaire_min.";");
+                $stmt = $this->pdo->prepare("SELECT * FROM offers WHERE offers.remun_offer >= :salaire_min");
+                $stmt->execute([':salaire_min' => $salaire_min]);
             } else {
-                $donnees = $this->pdo->query("
-                SELECT * from offers where offers.id_enterprise = ".$id_entreprise." 
-                and offers.remun_offer >= ".$salaire_min.";");
+                $stmt = $this->pdo->prepare("
+                SELECT * FROM offers 
+                WHERE offers.id_enterprise = :id_entreprise 
+                AND offers.remun_offer >= :salaire_min");
+                $stmt->execute([
+                    ':id_entreprise' => $id_entreprise,
+                    ':salaire_min' => $salaire_min
+                ]);
             }
 
-            $offres = $donnees->fetchAll(PDO::FETCH_ASSOC);
+            $offres = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Ajouter les compétences à chaque offre
             foreach ($offres as $key => $offre) {
                 $offres[$key]['skills'] = $this->getOfferSkills($offre['id_offers']);
             }
@@ -167,8 +172,9 @@ class StageUpModel extends Model {
 
     public function getSkills() {
         try {
-            $donnees = $this->pdo->query("SELECT * FROM skills ORDER BY label_skill");
-            return $donnees->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = $this->pdo->prepare("SELECT * FROM skills ORDER BY label_skill");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération des compétences : " . $message_erreur->getMessage());
         }
@@ -218,12 +224,17 @@ class StageUpModel extends Model {
         }
     }
 
-    public function get_note_attribuee($id_utilisateur,$id_entreprise) {
+    public function get_note_attribuee($id_utilisateur, $id_entreprise) {
         try {
-            $donnees = $this->pdo->query("
-                SELECT rating_evaluate from evaluate where evaluate.id_enterprise = ".$id_entreprise."
-                AND evaluate.id_user = ".$id_utilisateur.";");
-            return $donnees->fetchAll();
+            $stmt = $this->pdo->prepare("
+            SELECT rating_evaluate FROM evaluate 
+            WHERE evaluate.id_enterprise = :id_entreprise
+            AND evaluate.id_user = :id_utilisateur");
+            $stmt->execute([
+                ':id_entreprise' => $id_entreprise,
+                ':id_utilisateur' => $id_utilisateur
+            ]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération de la note : " . $message_erreur->getMessage());
         }
@@ -250,7 +261,7 @@ class StageUpModel extends Model {
     public function post_form_creer_pilote($nom, $prenom, $email, $mdp) {
         try {
             $requete = "INSERT INTO _user (firstname_user, lastname_user, email_user, password_user, id_rank)
-                    VALUES (:nom, :prenom, :email, :mdp, 2);";
+                    VALUES (:prenom, :nom, :email, :mdp, 2);";
     
             $requete_prep = $this->pdo->prepare($requete);
             $requete_prep->execute([
@@ -267,7 +278,7 @@ class StageUpModel extends Model {
     public function post_form_creer_etudiant($nom, $prenom, $email, $mdp) {
         try {
             $requete = "INSERT INTO _user (firstname_user, lastname_user, email_user, password_user, id_rank)
-                    VALUES (:nom, :prenom, :email, :mdp, 3);";
+                    VALUES (:prenom, :nom, :email, :mdp, 3);";
     
             $requete_prep = $this->pdo->prepare($requete);
             $requete_prep->execute([
@@ -329,12 +340,11 @@ class StageUpModel extends Model {
 
     public function get_liste_etudiants() {
         try {
-            $requete = "SELECT * from _user inner join ranks 
-            on _user.id_rank = ranks.id_rank 
-            where ranks.name_rank = 'etudiant';";
-            $requete_prep = $this->pdo->prepare($requete);
-            $requete_prep->execute();
-            return $requete_prep->fetchAll();
+            $stmt = $this->pdo->query("
+            SELECT * FROM _user 
+            INNER JOIN ranks ON _user.id_rank = ranks.id_rank 
+            WHERE ranks.name_rank = 'etudiant'");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération des étudiants : " . $message_erreur->getMessage());
         }
@@ -342,12 +352,11 @@ class StageUpModel extends Model {
 
     public function get_liste_pilotes() {
         try {
-            $requete = "SELECT * from _user inner join ranks 
-            on _user.id_rank = ranks.id_rank 
-            where ranks.name_rank = 'pilote';";
-            $requete_prep = $this->pdo->prepare($requete);
-            $requete_prep->execute();
-            return $requete_prep->fetchAll();
+            $stmt = $this->pdo->query("
+            SELECT * FROM _user 
+            INNER JOIN ranks ON _user.id_rank = ranks.id_rank 
+            WHERE ranks.name_rank = 'pilote'");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $message_erreur) {
             die("Erreur lors de la récupération des pilotes : " . $message_erreur->getMessage());
         }
@@ -433,6 +442,66 @@ class StageUpModel extends Model {
             die("Erreur lors de la modification des donnees de l'offre: " . $message_erreur->getMessage());
         }
     }
+
+
+    public function supp_entreprise($id_entreprise) {
+        try {
+            $requete = "DELETE FROM enterprises WHERE id_enterprise = :id_entreprise;";
+
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_entreprise' => $id_entreprise
+            ]);
+
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la suppression de l'entreprise : " . $message_erreur->getMessage());
+        }
+    }
+
+    public function supp_offre($id_offre) {
+        try {
+            $requete = "DELETE FROM offers WHERE id_offers = :id_offre;";
+
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_offre' => $id_offre
+            ]);
+
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la suppression de l'offre : " . $message_erreur->getMessage());
+        }
+    }
+
+    public function supp_pilote($id_pilote) {
+        try {
+            $requete = "DELETE FROM _user WHERE id_user = :id_pilote;";
+
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_pilote' => $id_pilote
+            ]);
+
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de Erreur lors de la suppression du pilote: " . $message_erreur->getMessage());
+        }
+    }
+
+    public function supp_etudiant($id_etudiant) {
+        try {
+            $requete = "DELETE FROM _user WHERE id_user = :id_etudiant;";
+
+            $requete_prep = $this->pdo->prepare($requete);
+            $requete_prep->execute([
+                ':id_etudiant' => $id_etudiant
+            ]);
+
+        } catch (PDOException $message_erreur) {
+            die("Erreur lors de la suppression de l'etudiant : " . $message_erreur->getMessage());
+        }
+    }
+
+
+
 
     public function post_form_postuler($id_utilisateur, $id_offre, $motivation, $cv) {
         try {
@@ -742,6 +811,27 @@ class StageUpModel extends Model {
     ";
         $stmt = $this->pdo->query($query);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function verif_perm($id_fonction, $id_utilisateur) {
+        try {
+            $requete_permission = "SELECT id_rank from _user WHERE id_user = :id_utilisateur;";
+            $requete_permission_prep = $this->pdo->prepare($requete_permission);
+            $requete_permission_prep->execute([':id_utilisateur' => $id_utilisateur]);
+            $permission = "r".$requete_permission_prep->fetchColumn();
+
+            $requete_verification = "SELECT $permission from perms WHERE id_page = :id_fonction;";
+            $requete_verification_prep = $this->pdo->prepare($requete_verification);
+            $requete_verification_prep->execute([':id_fonction' => $id_fonction]);
+
+            $verification = $requete_verification_prep->fetchColumn();
+            return ($verification);
+
+        
+        } catch (PDOException $message_erreur) {
+            error_log("Erreur lors de la verification des permissions : " . $message_erreur->getMessage());
+        }
     }
 
 }

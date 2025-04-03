@@ -22,8 +22,11 @@ class StageUpController extends Controller {
         SessionManager::updateLastActivity();
     }
 
-
-
+    public function verif_permission($id_fonction) {
+        $perm = '0';
+        $perm = $this->model->verif_perm($id_fonction,SessionManager::getCurrentUserId());
+        if ($perm == '0') {header("Location: /?uri=page_interdite");exit();}
+    }
 
     public function page_accueil() {
         $this->render('accueil.html');
@@ -98,6 +101,9 @@ class StageUpController extends Controller {
     }
 
     public function page_entreprise() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         if (isset($_GET['id_entreprise'])) : $id_entreprise = $_GET['id_entreprise']; else : $id_entreprise=1; endif;
         $infos_entreprise = $this->model->getEntrepriseById($id_entreprise);
         $id_utilisateur = SessionManager::getCurrentUserId();
@@ -106,61 +112,98 @@ class StageUpController extends Controller {
     }
 
     public function noter_entreprise() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         if (isset($_GET['id_entreprise'])) : $id_entreprise = $_GET['id_entreprise']; else : $id_entreprise=1; endif;
         $note_attribuee = $_GET['note_attribuee'];
         $id_utilisateur = SessionManager::getCurrentUserId();
         $this->model->post_note_attribuee($id_utilisateur,$id_entreprise,$note_attribuee);
-       header("Location: ?uri=page_entreprise&id_entreprise=".$id_entreprise);
+        header("Location: ?uri=page_entreprise&id_entreprise=".$id_entreprise);
+        
     }
 
     public function page_creer_compte_pilote() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->render('creer_compte_pilote.html');
     }
 
     public function creer_compte_pilote() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->model->post_form_creer_pilote($_POST['nom'],$_POST['prenom'],$_POST['email'],password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT));
         header("Location: ?uri=pilotes");
     }
 
     public function page_creer_compte_etudiant() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->render('creer_compte_etudiant.html');
     }
 
     public function creer_compte_etudiant() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->model->post_form_creer_etudiant($_POST['nom'],$_POST['prenom'],$_POST['email'],password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT));
         header("Location: ?uri=etudiants");
     }
 
     public function page_modif_compte_etudiant() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $id_etudiant = $_GET['id_etudiant'];
         $this->render('modif_compte_etudiant.html', ['id_etudiant' => $id_etudiant]);
     }
 
     public function modif_compte_etudiant() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->model->post_form_modif_etudiant((int)$_POST['id_etudiant'],$_POST['nom'],$_POST['prenom'],$_POST['email']);
         header("Location: ?uri=etudiants");
     }
 
     public function page_modif_compte_pilote() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $id_pilote = $_GET['id_pilote'];
         $this->render('modif_compte_pilote.html', ['id_pilote' => $id_pilote]);
     }
 
     public function modif_compte_pilote() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->model->post_form_modif_pilote((int)$_POST['id_pilote'],$_POST['nom'],$_POST['prenom'],$_POST['email']);
         header("Location: ?uri=pilotes");
     }
 
     public function page_creer_entreprise() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->render('creer_entreprise.html');
     }
 
     public function creer_entreprise() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+        
         $this->model->post_form_creer_entreprise($_POST['nom'],$_POST['description'],$_POST['email'],$_POST['tel']);
         header("Location: ?uri=entreprises");
     }
 
     public function page_creer_offre() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         // Récupérer la liste des compétences
         $skills = $this->model->getSkills();
 
@@ -171,6 +214,9 @@ class StageUpController extends Controller {
     }
 
     public function creer_offre() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         // Récupérer les compétences sélectionnées
         $selectedSkills = $_POST['skills'] ?? [];
 
@@ -184,20 +230,29 @@ class StageUpController extends Controller {
             $selectedSkills
         );
 
-        header("Location: ?uri=offres");
+        header("Location: /?uri=offres");
     }
 
     public function page_modif_entreprise() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->render('modif_entreprise.html', ['id_entreprise' => $_GET['id_entreprise']]);
     }
 
     public function modif_entreprise() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->model->post_form_modif_entreprise($_POST['id_entreprise'],$_POST['nom'],
         $_POST['description'],$_POST['email'],$_POST['tel']);
         header("Location: ?uri=entreprises");
     }
 
     public function page_modif_offre() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $id_offre = $_GET['id_offre'] ?? 0;
 
         //Valid ID
@@ -230,6 +285,8 @@ class StageUpController extends Controller {
     }
 
     public function modif_offre() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
         // Récupérer les compétences sélectionnées
         $selectedSkills = $_POST['skills'] ?? [];
 
@@ -247,10 +304,15 @@ class StageUpController extends Controller {
     }
 
     public function page_postuler() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         $this->render('postuler.html', ['id_offre' => $_GET['id_offre']]);
     }
 
     public function postuler() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
 
         $id_utilisateur = SessionManager::getCurrentUserId();
         $this->model->post_form_postuler($id_utilisateur,$_POST['id_offre'],
@@ -259,16 +321,60 @@ class StageUpController extends Controller {
     }
 
     public function liste_etudiants() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
         $etudiants = $this->model->get_liste_etudiants();
         $this->render('etudiants.html', ['etudiants' => $etudiants, 'page' => $page]);
     }
 
     public function liste_pilotes() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
         if (isset($_GET['page'])) : $page = (int)$_GET['page']; else : $page=1; endif;
         $pilotes = $this->model->get_liste_pilotes();
         $this->render('pilotes.html', ['pilotes' => $pilotes, 'page' => $page]);
     }
+
+
+    public function supp_entreprise() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
+        $id_entreprise = $_GET['id_entreprise'];
+        $this->model->supp_entreprise($id_entreprise);
+        header("Location: /?uri=entreprises");
+    }
+
+    public function supp_offre() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
+        $id_offre = $_GET['id_offre'];
+        $this->model->supp_offre($id_offre);
+        header("Location: /?uri=offres");
+    }
+
+    public function supp_pilote() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
+        $id_pilote = $_GET['id_utilisateur'];
+        $this->model->supp_pilote($id_pilote);
+        header("Location: /?uri=pilotes");
+    }
+
+    public function supp_etudiant() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
+
+        $id_etudiant = $_GET['id_utilisateur'];
+        $this->model->supp_etudiant($id_etudiant);
+        header("Location: /?uri=etudiants");
+    }
+
 
     public function afficher_login($error = null, $email = null) {
         $session_expired = isset($_GET['expired']);
@@ -336,6 +442,8 @@ class StageUpController extends Controller {
     }
 
     public function mes_candidatures() {
+        $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
 
         $this->requireAuthentication();
 
@@ -381,10 +489,9 @@ class StageUpController extends Controller {
 
     }
 
-
-
     public function wishlist() {
         $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
 
         $userId = SessionManager::getCurrentUserId();
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -428,6 +535,7 @@ class StageUpController extends Controller {
 
     public function addToWishlist() {
         $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
 
         if (!isset($_GET['id_offers'])) {
             header('Location: /?uri=offres');
@@ -445,6 +553,7 @@ class StageUpController extends Controller {
 
     public function removeFromWishlist() {
         $this->requireAuthentication();
+        $this->verif_permission(__FUNCTION__);
 
         if (!isset($_GET['id_offers'])) {
             header('Location: /?uri=wishlist');
@@ -502,11 +611,6 @@ class StageUpController extends Controller {
     }
 
 
-
-
-    
 }
-
-
 
 ?>
